@@ -1,5 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, 
+    { 
+        Fragment, 
+        useState, 
+        useEffect, 
+    } from 'react';
 import styled from 'styled-components';
+
+import {
+    BLOCKS_IN_ONE_LINE,
+    BG_COLOR,
+    BG_BLOCK_COLOR,
+} from '../GameConfig';
+import Menus from './Menus';
 
 const Container = styled.div`
     width: 100%;
@@ -12,18 +24,20 @@ const Main = styled.div`
     flex-basis: 0;
     min-width: 400px;
     max-width: 600px;
-    background-color: rgba(210,207,207,0.8);
+    background-color: ${BG_COLOR};
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    padding: 10px;
+    box-sizing: content-box;
 `;
 
 const GridBlock = styled.div`
     flex-grow: 1;
     flex-shrink: 1;
-    flex-basis: 25%;
-    background-color: rgba(210,207,207,0.8);
-    border: 1px solid #fff;
+    flex-basis: ${1 / BLOCKS_IN_ONE_LINE};
+    background-color: ${BG_BLOCK_COLOR};
+    border: 10px solid ${BG_COLOR};
     box-sizing: border-box;
 `;
 
@@ -31,11 +45,11 @@ const SideHolder = styled.div`
     flex-grow: 1;
 `;
 
-function MainContainer() {
+const MainContainer = function MainPlayGround() {
 
     const minWidth = 400;
-    const [lineHeight, setLineHeight] = useState(0);
-    const [gridHeight, setGridHeight] = useState(0);
+    const [lineHeight, setLineHeight] = useState('0');
+    const [gridHeight, setGridHeight] = useState('0');
 
     useEffect(()=>{
         setHeight();
@@ -46,17 +60,17 @@ function MainContainer() {
     });
 
     function setHeight() {
-        let _thisHeight = window.getComputedStyle(document.getElementById('mainHolder')).width;
-        let _numThisHeight = Number(_thisHeight.split('px')[0]);
-        _thisHeight = _numThisHeight < minWidth ? minWidth : _numThisHeight;
-        let _gridHeight = _thisHeight/4;
-        setGridHeight(_gridHeight+'px');
-        setLineHeight(_thisHeight+'px');
+        let thisHeight = window.getComputedStyle(document.getElementById('mainHolder')).width;
+        let numThisHeight = Number(thisHeight.split('px')[0]);
+        thisHeight = numThisHeight < minWidth ? minWidth : numThisHeight;
+        let gridHeight = thisHeight / BLOCKS_IN_ONE_LINE;
+        setGridHeight(gridHeight+'px');
+        setLineHeight(thisHeight+'px');
     }
 
     function getGrid() {
         let grids = [];
-        for (let i = 0; i < 16; i++) {
+        for (let i = 0; i < BLOCKS_IN_ONE_LINE ** 2; i++) {
             grids.push(i);
         }
         return grids.map(x=>{
@@ -65,15 +79,18 @@ function MainContainer() {
     }
 
     return (
-        <Container>
-            <SideHolder className={'sideHolder'}></SideHolder>
-            <Main id={'mainHolder'} style={{'height':lineHeight}}>
-                { 
-                    getGrid()
-                }
-            </Main>
-            <SideHolder className={'sideHolder'}></SideHolder>
-        </Container>  
+        <Fragment>
+            <Container>
+                <SideHolder className={'sideHolder'}></SideHolder>
+                <Main id={'mainHolder'} style={{'height':lineHeight}}>
+                    { 
+                        getGrid()
+                    }
+                </Main>
+                <SideHolder className={'sideHolder'}></SideHolder>
+            </Container>  
+            <Menus width={lineHeight}></Menus>
+        </Fragment>
     );
 }
 

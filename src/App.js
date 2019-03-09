@@ -3,13 +3,15 @@ import logo from './logo.svg';
 import './App.css';
 
 import MainContainer from './components/MainContainer';
+import Header from './components/Header';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="App-header">
+        <Header></Header>
         <MainContainer></MainContainer>
-      </header>
+      </div>
     </div>
   );
 }
