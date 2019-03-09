@@ -29,7 +29,7 @@ const Block = function indivitualBlock(props) {
             'lineHeight': (width - 20) + 'px',
             'textAlign': 'center',
             'color': '#000',
-            'fontSize': '2.5rem',//TODO: fix when 2048 exceeds border
+            'fontSize': props.num>512 ? '2rem' : '2.5rem',
             'fontWeight': 'bold',
             'backgroundColor': color,
             'boxSizing': 'border-box',
