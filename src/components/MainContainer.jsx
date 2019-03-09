@@ -13,6 +13,8 @@ import {
 } from '../GameConfig';
 import Menus from './Menus';
 import Block from './Block';
+import Blocks from '../functions/draw';
+import moveHandler from '../functions/move';
 
 const Container = styled.div`
     width: 100%;
@@ -52,7 +54,7 @@ const MainContainer = function MainPlayGround() {
     const minWidth = 400;
     const [lineHeight, setLineHeight] = useState('0');
     const [gridHeight, setGridHeight] = useState('0');
-
+    
     useEffect(()=>{
         setHeight();
         window.addEventListener('resize',setHeight);
@@ -60,7 +62,7 @@ const MainContainer = function MainPlayGround() {
             window.removeEventListener('resize',setHeight);
         });
     });
-
+    
     function setHeight() {
         let thisHeight = window.getComputedStyle(document.getElementById('mainHolder')).width;
         let numThisHeight = Number(thisHeight.split('px')[0]);
@@ -69,7 +71,7 @@ const MainContainer = function MainPlayGround() {
         setGridHeight(gridHeight+'px');
         setLineHeight(thisHeight+'px');
     }
-
+    
     function getGrid() {
         let grids = [];
         for (let i = 0; i < BLOCKS_IN_ONE_LINE ** 2; i++) {
@@ -80,13 +82,38 @@ const MainContainer = function MainPlayGround() {
         });   
     }
 
+    const [data, setData] = useState([{
+                                        position:[2,2],
+                                        num: 2,
+                                        }]);
+    
+    function eventHandler(e) {
+        moveHandler(e.code,data);
+    }
+
+    //add keyboard listener
+    useEffect(() => {
+        window.addEventListener('keydown', eventHandler);
+        return () => {
+            window.removeEventListener('keydown', eventHandler)
+        };
+    });
+
+    const [blockWidth, setBlcokWidth] = useState(Number(gridHeight.slice(0, -2)));
+    useEffect( ()=>{ 
+        setBlcokWidth(Number(gridHeight.slice(0, -2)));
+    }, [gridHeight]);
+
     return (
         <Fragment>
             <Container>
                 <SideHolder className={'sideHolder'}></SideHolder>
                 <Main id={'mainHolder'} style={{'height':lineHeight}}>
                     <div style={{'position': 'absolute'}}>
-                        <Block num={2048} position={[2, 2]} width={Number(gridHeight.slice(0,-2))}></Block>
+                        <Blocks 
+                            data = {data}
+                            blockWidth={blockWidth}
+                        ></Blocks>
                     </div>
                     { 
                         getGrid()

@@ -9,7 +9,7 @@ const Block = function indivitualBlock(props) {
         setWidth(props.width);
     },[props.width]);
 
-    const [position, setPosition] = useState([0,0]);
+    const [position, setPosition] = useState(props.position);
     useEffect( () => {
         setPosition(props.position);
     },[props.position]);
@@ -28,7 +28,7 @@ const Block = function indivitualBlock(props) {
             'top': (position[1] * width) + 'px',
             'lineHeight': (width - 20) + 'px',
             'textAlign': 'center',
-            'color': '#000',
+            'color': props.num>32 ? '#f2f2f2' : '#000',
             'fontSize': props.num>512 ? '2rem' : '2.5rem',
             'fontWeight': 'bold',
             'backgroundColor': color,
