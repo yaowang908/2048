@@ -16,6 +16,7 @@ const COLOR_SCHEME = {
     512: '#ffd83f',
     1024: '#ffd017',
     2048: '#ffad16',
+    super: '#0094c8',
 }
 
 export { 
