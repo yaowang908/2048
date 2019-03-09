@@ -12,6 +12,7 @@ import {
     BG_BLOCK_COLOR,
 } from '../GameConfig';
 import Menus from './Menus';
+import Block from './Block';
 
 const Container = styled.div`
     width: 100%;
@@ -30,6 +31,7 @@ const Main = styled.div`
     flex-wrap: wrap;
     padding: 10px;
     box-sizing: content-box;
+    position: relative;
 `;
 
 const GridBlock = styled.div`
@@ -83,6 +85,9 @@ const MainContainer = function MainPlayGround() {
             <Container>
                 <SideHolder className={'sideHolder'}></SideHolder>
                 <Main id={'mainHolder'} style={{'height':lineHeight}}>
+                    <div style={{'position': 'absolute'}}>
+                        <Block num={2048} position={[2, 2]} width={Number(gridHeight.slice(0,-2))}></Block>
+                    </div>
                     { 
                         getGrid()
                     }
