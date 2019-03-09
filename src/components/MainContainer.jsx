@@ -11,6 +11,7 @@ const Main = styled.div`
     flex-shrink: 1;
     flex-basis: 0;
     min-width: 400px;
+    max-width: 600px;
     background-color: rgba(210,207,207,0.8);
     display: flex;
     flex-direction: row;
