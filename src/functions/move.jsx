@@ -18,7 +18,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
                     A[i][j] = 0;
                 }
             }
-            for (let m=0; m<thisArray.length-1; m++) {
+            for (let m=0; m<thisArray.length-1; m+=1) {
                 if (thisArray[m] === 0) {
                     thisArray[m] = thisArray[m+1];
                     thisArray[m+1] = 0;
@@ -44,7 +44,37 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
 
     if( eventType === 'ArrowUp') {
         console.log('ArrowUp')
-
+        const twoDArray = convertor(data);
+        let A = [...twoDArray];
+        for (let i = BLOCKS_IN_ONE_LINE - 1; i >= 0; i -= 1) {
+            let thisArray = [];
+            for (let j = BLOCKS_IN_ONE_LINE - 1; j >= 0; j -= 1) {
+                if (A[i][j] !== 0) {
+                    thisArray.push(A[i][j]);
+                    A[i][j] = 0;
+                }
+            }
+            for (let m = thisArray.length - 1; m >0; m-=1) {
+                if (thisArray[m] === 0) {
+                    thisArray[m] = thisArray[m - 1];
+                    thisArray[m - 1] = 0;
+                }
+                if (thisArray[m] === thisArray[m - 1]) {
+                    thisArray[m] = (thisArray[m] + thisArray[m - 1]);
+                    thisArray[m - 1] = 0;
+                }
+            }
+            for (let n = thisArray.length -1; n > 0; n -= 1) {
+                if (!!thisArray[n]) {
+                    //do nothing
+                } else {
+                    thisArray[n] = 0;
+                }
+            }
+            console.dir(thisArray);
+            A[i] = thisArray.reverse();
+        }
+        return reverseConvertor(A);
     }
 
     if( eventType === 'ArrowLeft') {

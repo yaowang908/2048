@@ -106,7 +106,9 @@ const MainContainer = function MainPlayGround() {
     
     function eventHandler(e) {
         let newState = moveHandler(e.code,data); 
+        //TODO: randomly generate TWO new blocks with generator
         if (!!newState) setData(newState); 
+        //TODO: save state to cookie;
     }
 
     //add keyboard listener
