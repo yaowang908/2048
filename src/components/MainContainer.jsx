@@ -12,8 +12,7 @@ import {
     BG_BLOCK_COLOR,
 } from '../GameConfig';
 import Menus from './Menus';
-import Block from './Block';
-import Blocks from '../functions/draw';
+import Blocks from '../functions/Blocks';
 import moveHandler from '../functions/move';
 
 const Container = styled.div`
@@ -82,13 +81,31 @@ const MainContainer = function MainPlayGround() {
         });   
     }
 
-    const [data, setData] = useState([{
-                                        position:[2,2],
-                                        num: 2,
-                                        }]);
+    const [data, setData] = useState([
+        {
+            position:[2,2],
+            num: 2,
+        },
+        {
+            position: [1,2],
+            num: 8
+        },
+        {
+            position: [2,3],
+            num: 2
+        },
+        {
+            position: [3,2],
+            num: 4 
+        },
+        {
+            position: [3,3],
+            num: 8
+        }
+    ]);
     
     function eventHandler(e) {
-        moveHandler(e.code,data);
+        moveHandler(e.code,data); //TODO: setData from return 
     }
 
     //add keyboard listener
