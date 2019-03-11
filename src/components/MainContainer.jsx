@@ -105,7 +105,8 @@ const MainContainer = function MainPlayGround() {
     ]);
     
     function eventHandler(e) {
-        moveHandler(e.code,data); //TODO: setData from return 
+        let newState = moveHandler(e.code,data); 
+        if (!!newState) setData(newState); 
     }
 
     //add keyboard listener

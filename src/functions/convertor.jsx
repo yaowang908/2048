@@ -32,10 +32,12 @@ const reverseConvertor = function (data) {
 
     for (let m = 0; m < BLOCKS_IN_ONE_LINE; m += 1) {
         for (let n = 0; n < BLOCKS_IN_ONE_LINE; n += 1) {
-            result.push({
-                position: [m,n],
-                num: data[m][n],
-            });
+            if(data[m][n]) {
+                result.push({
+                    position: [m,n],
+                    num: data[m][n],
+                });
+            }
         }
     }
 

@@ -10,7 +10,6 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
         // set attribute to those should move
         // and ONLY first couple got collapsed
         let A = [...twoDArray];
-        console.dir(A);
         for (let i = BLOCKS_IN_ONE_LINE-1; i>=0; i-=1) {
             let thisArray = [];
             for (let j = BLOCKS_IN_ONE_LINE-1; j>=0; j-=1) {
@@ -20,22 +19,27 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
                 }
             }
             for (let m=0; m<thisArray.length-1; m++) {
-                /** TODO:
-                 *  rip off 0s, combine euqal nums, reassign A[i][]
-                 */
-                if (thisArray[m] === thisArray[m+1]) {
-                    thisArray[m] = (thisArray[m]+thisArray[m+1]);
-                    thisArray[m+1] = 0;
-                }
                 if (thisArray[m] === 0) {
                     thisArray[m] = thisArray[m+1];
                     thisArray[m+1] = 0;
                 }
-                A[i][BLOCKS_IN_ONE_LINE-1-m] = thisArray[m];
+                if (thisArray[m] === thisArray[m+1]) {
+                    thisArray[m] = (thisArray[m]+thisArray[m+1]);
+                    thisArray[m+1] = 0;
+                }
+                // A[i][BLOCKS_IN_ONE_LINE-1-m] = thisArray[m];
             }
-            console.dir(thisArray);
-        }
-        console.dir(A);
+            thisArray.length = BLOCKS_IN_ONE_LINE;//fill thisArray with undefined to length to BLOCKS_IN_ONE_LINE
+            for (let n=0; n<thisArray.length; n+=1) {
+                if(!!thisArray[n]) {
+                    //do nothing
+                } else {
+                    thisArray[n] = 0;
+                }
+            }
+            A[i] = thisArray.reverse();
+        }// end of move down
+        return reverseConvertor(A);
     }
 
     if( eventType === 'ArrowUp') {
