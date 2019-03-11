@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { convertor, reverseConvertor } from './convertor';
 import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
+import zip from 'lodash/zip';
 
 const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(eventType, data) {
     if( eventType === 'ArrowDown' ) {
@@ -71,7 +72,6 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
                     thisArray[n] = 0;
                 }
             }
-            console.dir(thisArray);
             A[i] = thisArray.reverse();
         }
         return reverseConvertor(A);
@@ -79,14 +79,75 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
 
     if( eventType === 'ArrowLeft') {
         console.log('ArrowLeft')
-
+        const twoDArray = convertor(data);
+        //transposing
+        let A = zip(...twoDArray);
+        for (let i = BLOCKS_IN_ONE_LINE - 1; i >= 0; i -= 1) {
+            let thisArray = [];
+            for (let j = 0; j <= BLOCKS_IN_ONE_LINE - 1; j += 1) {
+                if (A[i][j] !== 0) {
+                    thisArray.push(A[i][j]);
+                    A[i][j] = 0;
+                }
+            }
+            for (let m = 0; m < thisArray.length - 1; m += 1) {
+                if (thisArray[m] === 0) {
+                    thisArray[m] = thisArray[m + 1];
+                    thisArray[m + 1] = 0;
+                }
+                if (thisArray[m] === thisArray[m + 1]) {
+                    thisArray[m] = (thisArray[m] + thisArray[m + 1]);
+                    thisArray[m + 1] = 0;
+                }
+            }
+            
+            for (let n = BLOCKS_IN_ONE_LINE - 1; n > 0; n -= 1) {
+                if (!!thisArray[n]) {
+                    //do nothing
+                } else {
+                    thisArray[n] = 0;
+                }
+            }
+            A[i] = thisArray;
+        }
+        return reverseConvertor(zip(...A));
     }
 
     if( eventType === 'ArrowRight') {
         console.log('ArrowRight')
+        const twoDArray = convertor(data);
+        //transposing
+        let A = zip(...twoDArray);
 
+        for (let i = BLOCKS_IN_ONE_LINE - 1; i >= 0; i -= 1) {
+            let thisArray = [];
+            for (let j = BLOCKS_IN_ONE_LINE - 1; j >= 0; j -= 1) {
+                if (A[i][j] !== 0) {
+                    thisArray.push(A[i][j]);
+                    A[i][j] = 0;
+                }
+            }
+            for (let m = 0; m < thisArray.length - 1; m += 1) {
+                if (thisArray[m] === 0) {
+                    thisArray[m] = thisArray[m + 1];
+                    thisArray[m + 1] = 0;
+                }
+                if (thisArray[m] === thisArray[m + 1]) {
+                    thisArray[m] = (thisArray[m] + thisArray[m + 1]);
+                    thisArray[m + 1] = 0;
+                }
+            }
+            for (let n = BLOCKS_IN_ONE_LINE - 1; n > 0; n -= 1) {
+                if (!!thisArray[n]) {
+                    //do nothing
+                } else {
+                    thisArray[n] = 0;
+                }
+            }
+            A[i] = thisArray.reverse();
+        }
+        return reverseConvertor(zip(...A));
     }
-    //return newData
 }
 
 moveHandler.propTypes = {
