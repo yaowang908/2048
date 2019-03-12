@@ -1,31 +1,91 @@
 import PropTypes from 'prop-types';
+import { convertor, reverseConvertor } from './convertor';import sample from 'lodash/sample';
+import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
+import sampleSize from 'lodash/sampleSize';
+import cloneDeep from 'lodash/cloneDeep';
 
 const generator = function generatorTwoNodesRandomly(data) {
+    const twoDArray = convertor(data);
+    const dataCopy = [...twoDArray];
 
+    const resultTwoDArray = generatorWithTwoDArray(dataCopy);
+     
+    if (!resultTwoDArray) return false;
+    const result = reverseConvertor(resultTwoDArray);
+    return result;
 }
 
-const generateNumber = function () {
-    const pool = [2, 4, 8, 16, 32];
-    // TODO:number should not be bigger than current largest number on screen
+const generatorWithTwoDArray = function (data) {
+    let potentialPosition = [];
+    let topFloor = 0;
+    const dataCopy = [...data];
+    for (let m = 0; m < BLOCKS_IN_ONE_LINE; m += 1) {
+        for (let n = 0; n<BLOCKS_IN_ONE_LINE; n+=1) {
+            if(!dataCopy) dataCopy = 0;
+        }
+    }
+    console.dir(dataCopy);
+    for (let m = 0; m < dataCopy.length; m += 1) {
+        for (let n = 0; n < dataCopy[m].length; n += 1) {
+            if (dataCopy[m][n] > topFloor) topFloor = dataCopy[m][n];
+            potentialPosition.push([m, n])
+        }
+    }
 
-}
-
-const generatePosition = function () {
-    // get all current positions
-    // TODO: randomly generate two more on blanks
     // if no more spaces then !!failed!!
+    if (potentialPosition.length === 0) return false;
 
+    const [num1, num2] = generateNumber(topFloor);
+    const [position1, position2] = generatePosition(potentialPosition);
+
+    dataCopy[position1[0]][position1[1]] = num1;
+    dataCopy[position2[0]][position2[1]] = num2;
+
+    return dataCopy;
 }
 
 generator.defaultProps = {
     data: [],
 };
 
+// {
+//     position: [3,3],
+//     num: 8
+// }
 generator.propTypes = {
     data: PropTypes.arrayOf(
-            PropTypes.shape({
-                position: PropTypes.arrayOf(PropTypes.number),
-                num: PropTypes.number,
-            })
+        PropTypes.shape({
+            position: PropTypes.arrayOf(PropTypes.number),
+            num: PropTypes.number,
+        })
         ),
+    }
+    
+/**
+ * @param {num} topFloor indicates current biggest number on plate  
+ */
+const generateNumber = function (topFloor) {
+    let topFloorCheckLowest = 2;
+    if( topFloor > 2 ) topFloorCheckLowest = topFloor; 
+    const pool = [2, 4, 8, 16, 32].filter(x=> x <= topFloorCheckLowest);
+    const num1 = sample(pool);
+    const num2 = sample(pool);
+    return [num1,num2];
 }
+
+generateNumber.propTypes = {
+    topFloor : PropTypes.number.isRequired,
+}
+
+const generatePosition = function (potentialPosition) {
+    const result = sampleSize(potentialPosition, 2);
+    return result;    
+}
+
+generatePosition.propTypes = {
+    potentialPosition: PropTypes.arrayOf(
+        PropTypes.arrayOf(PropTypes.number)
+    ).isRequired,
+}
+
+export { generator, generatorWithTwoDArray };

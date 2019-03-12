@@ -2,11 +2,13 @@ import PropTypes from 'prop-types';
 import { convertor, reverseConvertor } from './convertor';
 import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
 import zip from 'lodash/zip';
+// import {generatorWithTwoDArray} from './generator';
 
 const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(eventType, data) {
+    const twoDArray = convertor(data);
+
     if( eventType === 'ArrowDown' ) {
         console.log('ArrowDown')
-        const twoDArray = convertor(data);
         // check every block, see if it should move
         // set attribute to those should move
         // and ONLY first couple got collapsed
@@ -40,12 +42,12 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
             }
             A[i] = thisArray.reverse();
         }// end of move down
+
         return reverseConvertor(A);
     }
 
     if( eventType === 'ArrowUp') {
         console.log('ArrowUp')
-        const twoDArray = convertor(data);
         let A = [...twoDArray];
         for (let i = BLOCKS_IN_ONE_LINE - 1; i >= 0; i -= 1) {
             let thisArray = [];
@@ -79,7 +81,6 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
 
     if( eventType === 'ArrowLeft') {
         console.log('ArrowLeft')
-        const twoDArray = convertor(data);
         //transposing
         let A = zip(...twoDArray);
         for (let i = BLOCKS_IN_ONE_LINE - 1; i >= 0; i -= 1) {
@@ -115,7 +116,6 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
 
     if( eventType === 'ArrowRight') {
         console.log('ArrowRight')
-        const twoDArray = convertor(data);
         //transposing
         let A = zip(...twoDArray);
 

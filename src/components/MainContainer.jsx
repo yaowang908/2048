@@ -14,6 +14,7 @@ import {
 import Menus from './Menus';
 import Blocks from '../functions/Blocks';
 import moveHandler from '../functions/move';
+import {generator} from '../functions/generator';
 
 const Container = styled.div`
     width: 100%;
@@ -81,28 +82,27 @@ const MainContainer = function MainPlayGround() {
         });   
     }
 
-    const [data, setData] = useState([
-        {
-            position:[2,2],
-            num: 2,
-        },
-        {
-            position: [1,2],
-            num: 8
-        },
-        {
-            position: [2,3],
-            num: 2
-        },
-        {
-            position: [3,2],
-            num: 4 
-        },
-        {
-            position: [3,3],
-            num: 8
-        }
-    ]);
+    // {
+    //     position:[2,2],
+    //     num: 2,
+    // },
+    // {
+    //     position: [1,2],
+    //     num: 8
+    // },
+    // {
+    //     position: [2,3],
+    //     num: 2
+    // },
+    // {
+    //     position: [3,2],
+    //     num: 4 
+    // },
+    // {
+    //     position: [3,3],
+    //     num: 8
+    // }
+    const [data, setData] = useState(generator([]));
     
     function eventHandler(e) {
         let newState = moveHandler(e.code,data); 
