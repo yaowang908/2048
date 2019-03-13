@@ -26,7 +26,6 @@ const generatorOne = function generatorOneNodeRandomly(data) {
 }
 
 const generatorWithTwoDArray = function (data, size = 2) {
-    //FIXME: called multiple times
     let potentialPosition = [];
     let topFloor = 0;
     const dataCopy = [...data];
