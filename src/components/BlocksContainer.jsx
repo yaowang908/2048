@@ -11,6 +11,8 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
 
     function eventHandler(e) {
         let newState = moveHandler(e.code, data);
+        // TODO: if no node are moved, should NOT generator new node
+        // TODO: if no space left should !!failed!!
         newState = generatorOne(newState);
         if (!!newState) setData(newState);
         //TODO: save state to cookie;

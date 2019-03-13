@@ -1,6 +1,7 @@
 main function
 
-1. add generator to move function
+1. if no node are moved, should NOT generator new node
+2. if no space left should !!failed!!
 
 
 improve gaming experience
