@@ -1,12 +1,12 @@
 main function
 
-1. if no node are moved, should NOT generator new node
 2. if no space left should !!failed!!
+3 end game component
 
 
 improve gaming experience
 
-1. add local cache function
+
 2. add animation when blocks collapse
 3. increase score buy collapsing blocks value
 4. add button function to bottom menu
