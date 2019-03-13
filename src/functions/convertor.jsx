@@ -11,6 +11,8 @@ const convertor = function convertObjectArrayToTwoDimentionArray(data) {
         result.push([...subLevel]);
     }
 
+    if(!data) return result;
+
     data.map(x => {
         result[x.position[0]][x.position[1]] = x.num;
     });

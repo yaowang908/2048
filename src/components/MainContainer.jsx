@@ -1,20 +1,9 @@
-import React, 
-    { 
-        Fragment, 
-        useState, 
-        useEffect, 
-    } from 'react';
+import React, {  Fragment, useState, useEffect, } from 'react';
 import styled from 'styled-components';
 
-import {
-    BLOCKS_IN_ONE_LINE,
-    BG_COLOR,
-    BG_BLOCK_COLOR,
-} from '../GameConfig';
+import { BLOCKS_IN_ONE_LINE, BG_COLOR, BG_BLOCK_COLOR, } from '../GameConfig';
 import Menus from './Menus';
-import Blocks from '../functions/Blocks';
-import moveHandler from '../functions/move';
-import {generator} from '../functions/generator';
+import BlocksContainer from './BlocksContainer';
 
 const Container = styled.div`
     width: 100%;
@@ -50,11 +39,9 @@ const SideHolder = styled.div`
 `;
 
 const MainContainer = function MainPlayGround() {
-
     const minWidth = 400;
     const [lineHeight, setLineHeight] = useState('0');
     const [gridHeight, setGridHeight] = useState('0');
-    
     useEffect(()=>{
         setHeight();
         window.addEventListener('resize',setHeight);
@@ -68,8 +55,8 @@ const MainContainer = function MainPlayGround() {
         let numThisHeight = Number(thisHeight.split('px')[0]);
         thisHeight = numThisHeight < minWidth ? minWidth : numThisHeight;
         let gridHeight = thisHeight / BLOCKS_IN_ONE_LINE;
-        setGridHeight(gridHeight+'px');
-        setLineHeight(thisHeight+'px');
+        setGridHeight(gridHeight);
+        setLineHeight(thisHeight);
     }
     
     function getGrid() {
@@ -82,66 +69,24 @@ const MainContainer = function MainPlayGround() {
         });   
     }
 
-    // {
-    //     position:[2,2],
-    //     num: 2,
-    // },
-    // {
-    //     position: [1,2],
-    //     num: 8
-    // },
-    // {
-    //     position: [2,3],
-    //     num: 2
-    // },
-    // {
-    //     position: [3,2],
-    //     num: 4 
-    // },
-    // {
-    //     position: [3,3],
-    //     num: 8
-    // }
-    const [data, setData] = useState(generator([]));
-    
-    function eventHandler(e) {
-        let newState = moveHandler(e.code,data); 
-        //TODO: randomly generate TWO new blocks with generator
-        if (!!newState) setData(newState); 
-        //TODO: save state to cookie;
-    }
-
-    //add keyboard listener
-    useEffect(() => {
-        window.addEventListener('keydown', eventHandler);
-        return () => {
-            window.removeEventListener('keydown', eventHandler)
-        };
-    });
-
-    const [blockWidth, setBlcokWidth] = useState(Number(gridHeight.slice(0, -2)));
+    const [blockWidth, setBlcokWidth] = useState(Number(gridHeight));
     useEffect( ()=>{ 
-        setBlcokWidth(Number(gridHeight.slice(0, -2)));
+        setBlcokWidth(Number(gridHeight));
     }, [gridHeight]);
 
     return (
         <Fragment>
             <Container>
                 <SideHolder className={'sideHolder'}></SideHolder>
-                <Main id={'mainHolder'} style={{'height':lineHeight}}>
-                    <div style={{'position': 'absolute'}}>
-                        <Blocks 
-                            data = {data}
-                            blockWidth={blockWidth}
-                        ></Blocks>
-                    </div>
+                <Main id={'mainHolder'} style={{'height':lineHeight+'px'}}>
+                    <BlocksContainer blockWidth={ blockWidth }></BlocksContainer>
                     { 
                         getGrid()
                     }
                 </Main>
                 <SideHolder className={'sideHolder'}></SideHolder>
             </Container>  
-            <Menus width={lineHeight}></Menus>
+            <Menus width={lineHeight+'px'}></Menus>
         </Fragment>
     );
 }

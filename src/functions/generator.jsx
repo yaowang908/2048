@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { convertor, reverseConvertor } from './convertor';import sample from 'lodash/sample';
 import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
 import sampleSize from 'lodash/sampleSize';
-import cloneDeep from 'lodash/cloneDeep';
 
 const generator = function generatorTwoNodesRandomly(data) {
     const twoDArray = convertor(data);
@@ -15,7 +14,19 @@ const generator = function generatorTwoNodesRandomly(data) {
     return result;
 }
 
-const generatorWithTwoDArray = function (data) {
+const generatorOne = function generatorOneNodeRandomly(data) {
+    const twoDArray = convertor(data);
+    const dataCopy = [...twoDArray];
+
+    const resultTwoDArray = generatorWithTwoDArray(dataCopy, 1);
+
+    if (!resultTwoDArray) return false;
+    const result = reverseConvertor(resultTwoDArray);
+    return result;
+}
+
+const generatorWithTwoDArray = function (data, size = 2) {
+    //FIXME: called multiple times
     let potentialPosition = [];
     let topFloor = 0;
     const dataCopy = [...data];
@@ -24,23 +35,29 @@ const generatorWithTwoDArray = function (data) {
             if(!dataCopy) dataCopy = 0;
         }
     }
-    console.dir(dataCopy);
     for (let m = 0; m < dataCopy.length; m += 1) {
         for (let n = 0; n < dataCopy[m].length; n += 1) {
             if (dataCopy[m][n] > topFloor) topFloor = dataCopy[m][n];
-            potentialPosition.push([m, n])
+            if(!dataCopy[m][n]) potentialPosition.push([m, n]);
         }
     }
 
     // if no more spaces then !!failed!!
     if (potentialPosition.length === 0) return false;
 
-    const [num1, num2] = generateNumber(topFloor);
-    const [position1, position2] = generatePosition(potentialPosition);
+    if (size === 2) {
+        const [num1, num2] = generateNumber(topFloor);
+        const [position1, position2] = generatePosition(potentialPosition);
 
-    dataCopy[position1[0]][position1[1]] = num1;
-    dataCopy[position2[0]][position2[1]] = num2;
+        dataCopy[position1[0]][position1[1]] = num1;
+        dataCopy[position2[0]][position2[1]] = num2;
 
+        return dataCopy;
+    } 
+
+    const num = generateNumber(topFloor, 1);
+    const position = generatePosition(potentialPosition, 1);
+    dataCopy[position[0]][position[1]] = num;
     return dataCopy;
 }
 
@@ -64,22 +81,27 @@ generator.propTypes = {
 /**
  * @param {num} topFloor indicates current biggest number on plate  
  */
-const generateNumber = function (topFloor) {
+const generateNumber = function (topFloor, size = 2) {
     let topFloorCheckLowest = 2;
     if( topFloor > 2 ) topFloorCheckLowest = topFloor; 
     const pool = [2, 4, 8, 16, 32].filter(x=> x <= topFloorCheckLowest);
     const num1 = sample(pool);
     const num2 = sample(pool);
-    return [num1,num2];
+    if (size === 2) return [num1,num2];
+    return num1;
 }
 
 generateNumber.propTypes = {
     topFloor : PropTypes.number.isRequired,
 }
 
-const generatePosition = function (potentialPosition) {
-    const result = sampleSize(potentialPosition, 2);
-    return result;    
+const generatePosition = function (potentialPosition, size = 2) {
+    if (size === 2) {
+        const result = sampleSize(potentialPosition, 2);
+        return result;    
+    } 
+    const result = sample(potentialPosition);
+    return result;
 }
 
 generatePosition.propTypes = {
@@ -88,4 +110,4 @@ generatePosition.propTypes = {
     ).isRequired,
 }
 
-export { generator, generatorWithTwoDArray };
+export { generator, generatorOne, generatorWithTwoDArray };
