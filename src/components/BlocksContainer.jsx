@@ -5,10 +5,11 @@ import moveHandler from '../functions/move';
 import { generator, generatorOne } from '../functions/generator';
 import differenceWith from 'lodash/differenceWith';
 import isEqual from 'lodash/isEqual';
+import Cookies from 'js-cookie';
 
 const BlocksContainer = function groupAllBlocksTogether(props) {
 
-    const initState = generator([]);
+    const initState = Cookies.getJSON('data') || generator([]);
     const [data, setData] = useState(initState);
 
     function eventHandler(e) {
@@ -24,11 +25,11 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
         if(!movementFailure) {
             newState = generatorOne(newState);
             if (!!newState) setData(newState);
+            Cookies.set('data',newState, { path: ''});
         }
 
         // TODO: if no space left should !!failed!!
 
-        //TODO: save state to cookie;
     }
 
     //add keyboard listener
