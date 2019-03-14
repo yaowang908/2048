@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { convertor, reverseConvertor } from './convertor';
 import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
 import zip from 'lodash/zip';
 
-const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(eventType, data, isGameOver = false) {
+const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(eventType, data, isGameOver = false, score = 0) {
     if(isGameOver) return data;
 
     const twoDArray = convertor(data);
@@ -30,6 +30,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
                 if (thisArray[m] === thisArray[m+1]) {
                     thisArray[m] = (thisArray[m]+thisArray[m+1]);
                     thisArray[m+1] = 0;
+                    score += thisArray[m];//increase game score
                 }
                 // A[i][BLOCKS_IN_ONE_LINE-1-m] = thisArray[m];
             }
@@ -44,7 +45,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
             A[i] = thisArray.reverse();
         }// end of move down
 
-        return reverseConvertor(A);
+        return [ reverseConvertor(A), score ];
     }
 
     if( eventType === 'ArrowUp') {
@@ -66,6 +67,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
                 if (thisArray[m] === thisArray[m - 1]) {
                     thisArray[m] = (thisArray[m] + thisArray[m - 1]);
                     thisArray[m - 1] = 0;
+                    score += thisArray[m];//increase game score
                 }
             }
             for (let n = thisArray.length -1; n > 0; n -= 1) {
@@ -77,7 +79,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
             }
             A[i] = thisArray.reverse();
         }
-        return reverseConvertor(A);
+        return [ reverseConvertor(A), score ];
     }
 
     if( eventType === 'ArrowLeft') {
@@ -100,6 +102,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
                 if (thisArray[m] === thisArray[m + 1]) {
                     thisArray[m] = (thisArray[m] + thisArray[m + 1]);
                     thisArray[m + 1] = 0;
+                    score += thisArray[m];//increase game score
                 }
             }
             
@@ -112,7 +115,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
             }
             A[i] = thisArray;
         }
-        return reverseConvertor(zip(...A));
+        return [ reverseConvertor(zip(...A)), score ];
     }
 
     if( eventType === 'ArrowRight') {
@@ -136,6 +139,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
                 if (thisArray[m] === thisArray[m + 1]) {
                     thisArray[m] = (thisArray[m] + thisArray[m + 1]);
                     thisArray[m + 1] = 0;
+                    score += thisArray[m];//increase game score
                 }
             }
             for (let n = BLOCKS_IN_ONE_LINE - 1; n > 0; n -= 1) {
@@ -147,18 +151,20 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
             }
             A[i] = thisArray.reverse();
         }
-        return reverseConvertor(zip(...A));
+        return [ reverseConvertor(zip(...A)), score ];
     }
 }
 
-moveHandler.propTypes = {
-    eventType: PropTypes.string.isRequired,
-    data: PropTypes.arrayOf(
-            PropTypes.shape({
-                position: PropTypes.arrayOf(PropTypes.number),
-                num: PropTypes.number,
-            })
-        ),
-}
+// moveHandler.propTypes = {
+//     eventType: PropTypes.string.isRequired,
+//     data: PropTypes.arrayOf(
+//             PropTypes.shape({
+//                 position: PropTypes.arrayOf(PropTypes.number),
+//                 num: PropTypes.number,
+//             })
+//         ),
+//     isGameOver: PropTypes.bool,
+//     score: PropTypes.number.isRequired,
+// }
 
 export default moveHandler;

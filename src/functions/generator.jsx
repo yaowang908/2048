@@ -28,7 +28,7 @@ const generatorOne = function generatorOneNodeRandomly(data) {
 const generatorWithTwoDArray = function (data, size = 2) {
     let potentialPosition = [];
     let topFloor = 0;
-    const dataCopy = [...data];
+    let dataCopy = [...data];
     for (let m = 0; m < BLOCKS_IN_ONE_LINE; m += 1) {
         for (let n = 0; n<BLOCKS_IN_ONE_LINE; n+=1) {
             if(!dataCopy) dataCopy = 0;

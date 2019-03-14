@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Blocks from '../functions/Blocks';
 import moveHandler from '../functions/move';
@@ -10,14 +10,18 @@ import { GameContext } from './GameContext';
 import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
 
 const BlocksContainer = function groupAllBlocksTogether(props) {
-
-    const initState = Cookies.getJSON('data') || generator([]);
+    if (!Cookies.getJSON('data')) Cookies.set('data',[], {path: ''});
+    const initState = (Cookies.getJSON('data').length === 0) ? generator([]) : Cookies.getJSON('data');
     const [data, setData] = useState(initState);
 
     const { context, setContext } = useContext(GameContext);
 
     function eventHandler(e) {
-        let newState = moveHandler(e.code, data, context.isGameOver);
+        let [ newState, score]= moveHandler(e.code, data, context.isGameOver);
+
+        setContext({score: context.score + score});
+        Cookies.set('score', context.score + score, { path: '' });
+
         let movementFailure = false;
 
         let diffBtwStates = differenceWith(newState, data, isEqual)
@@ -31,10 +35,14 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
                 Cookies.set('data',newState, { path: ''});
             } else {
                 setContext({isGameOver: true});
+                Cookies.set('data', newState, { path: '' });
             }
         } else {
             const maxBlocksNum = BLOCKS_IN_ONE_LINE ** 2;
-            if (maxBlocksNum === newState.length) setContext({ isGameOver: true });
+            if (maxBlocksNum === newState.length) {
+                setContext({ isGameOver: true });
+                Cookies.set('data', [], { path: '' });
+            }
         }
 
         //if no space to create new node then GAME OVER

@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { GameContext } from './GameContext';
 import PropTypes from 'prop-types';
 
 const EndGame = function endGameScreen( props ) {
-    const { context, setContext } = useContext(GameContext);
+    const { context, } = useContext(GameContext);
 
     return (
         <div style={{

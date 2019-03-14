@@ -5,7 +5,6 @@ import { BLOCKS_IN_ONE_LINE, BG_COLOR, BG_BLOCK_COLOR, } from '../GameConfig';
 import Menus from './Menus';
 import BlocksContainer from './BlocksContainer';
 import EndGame from './EndGameScreen';
-import { GameContext } from './GameContext';
 
 const Container = styled.div`
     width: 100%;
@@ -46,7 +45,6 @@ const MainContainer = function MainPlayGround() {
     const [lineHeight, setLineHeight] = useState('0');
     const [gridHeight, setGridHeight] = useState('0');
     useEffect(()=>{
-        //TODO: shouldn't move when gameover
         setHeight();
         window.addEventListener('resize',setHeight);
         return(()=>{
@@ -78,11 +76,8 @@ const MainContainer = function MainPlayGround() {
         setBlcokWidth(Number(gridHeight));
     }, [gridHeight]);
 
-    const [gameContext, setGameContext] = useState({isGameOver: false,})
-
     return (
         <Fragment>
-            <GameContext.Provider value={{ context: gameContext, setContext: setGameContext}}>
                 <EndGame width={window.innerWidth+'px'} height={window.innerHeight+'px'}></EndGame>
                 <Container>
                     <SideHolder className={'sideHolder'}></SideHolder>
@@ -95,7 +90,6 @@ const MainContainer = function MainPlayGround() {
                     <SideHolder className={'sideHolder'}></SideHolder>
                 </Container>  
                 <Menus width={lineHeight+'px'}></Menus>
-            </GameContext.Provider>
         </Fragment>
     );
 }

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { GAME_NAME, GAME_DESCRIPTION, HEADER_HEIGHT } from '../GameConfig';
+import { GameContext } from './GameContext';
 
 const HeaderContainer = styled.div`
     width: 100%;
@@ -12,7 +12,9 @@ const HeaderContainer = styled.div`
 
 // flex - shrink: 1;
 // flex - basis: 0;
-const Header = function headerContainsScoreAndDescription(props) {
+const Header = function headerContainsScoreAndDescription() {
+    const { context, setContext } = useContext(GameContext);
+
     return(
         <HeaderContainer>
             <div style={{ 'flex': '1 1 auto' }}></div>
@@ -48,20 +50,12 @@ const Header = function headerContainsScoreAndDescription(props) {
                     </div>
                 </div>
                 <div style={{ 'flex':'1 1 auto' }}>
-                    <h1>{props.score}</h1>
+                    <h1>{context.score}</h1>
                 </div>
             </div>
             <div style={{ 'flex':'1 1 auto' }}></div>
         </HeaderContainer>
     );
 }
-
-Header.defaultProps = {
-    score: 0,
-}
-
-Header.propTypes = {
-    score: PropTypes.number.isRequired,
-} 
 
 export default Header;
