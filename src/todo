@@ -1,11 +1,10 @@
 main function
 
 1. add game win function
-2. app.js 
-  //FIXME:update gamecontext.gamerestart
 
 improve gaming experience
 
 1. add animation when blocks collapse
 2. add button function to bottom menu
+    FIXME: added button but not function
 3. add button to set game level
