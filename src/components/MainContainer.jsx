@@ -1,9 +1,10 @@
 import React, {  Fragment, useState, useEffect, } from 'react';
 import styled from 'styled-components';
 
-import { BLOCKS_IN_ONE_LINE, BG_COLOR, BG_BLOCK_COLOR, } from '../GameConfig';
+import { BLOCKS_IN_ONE_LINE, BG_COLOR, } from '../GameConfig';
 import Menus from './Menus';
 import BlocksContainer from './BlocksContainer';
+import Grid from './Grid';
 import EndGame from './EndGameScreen';
 
 const Container = styled.div`
@@ -24,15 +25,6 @@ const Main = styled.div`
     padding: 10px;
     box-sizing: content-box;
     position: relative;
-`;
-
-const GridBlock = styled.div`
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: ${1 / BLOCKS_IN_ONE_LINE};
-    background-color: ${BG_BLOCK_COLOR};
-    border: 10px solid ${BG_COLOR};
-    box-sizing: border-box;
 `;
 
 const SideHolder = styled.div`
@@ -60,17 +52,7 @@ const MainContainer = function MainPlayGround() {
         setGridHeight(gridHeight);
         setLineHeight(thisHeight);
     }
-    
-    function getGrid() {
-        let grids = [];
-        for (let i = 0; i < BLOCKS_IN_ONE_LINE ** 2; i++) {
-            grids.push(i);
-        }
-        return grids.map(x=>{
-            return <GridBlock key={x} id={'grid_'+x} style={{'height':gridHeight,'width':gridHeight}}></GridBlock>
-        });   
-    }
-
+  
     const [blockWidth, setBlcokWidth] = useState(Number(gridHeight));
     useEffect( ()=>{ 
         setBlcokWidth(Number(gridHeight));
@@ -83,9 +65,7 @@ const MainContainer = function MainPlayGround() {
                     <SideHolder className={'sideHolder'}></SideHolder>
                     <Main id={'mainHolder'} style={{'height':lineHeight+'px'}}>
                         <BlocksContainer blockWidth={ blockWidth }></BlocksContainer>
-                        { 
-                            getGrid()
-                        }
+                        <Grid gridHeight={gridHeight+'px'}></Grid>
                     </Main>
                     <SideHolder className={'sideHolder'}></SideHolder>
                 </Container>  

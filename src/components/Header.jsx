@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { GAME_NAME, GAME_DESCRIPTION, HEADER_HEIGHT } from '../GameConfig';
+import { GAME_NAME, GAME_DESCRIPTION, HEADER_HEIGHT, COLOR_SCHEME } from '../GameConfig';
 import { GameContext } from './GameContext';
 
 const HeaderContainer = styled.div`
@@ -49,7 +49,7 @@ const Header = function headerContainsScoreAndDescription() {
                         {GAME_DESCRIPTION}
                     </div>
                 </div>
-                <div style={{ 'flex':'1 1 auto' }}>
+                <div style={{ 'flex': '1 1 auto', 'color': COLOR_SCHEME[128] }}>
                     <h1>{context.score}</h1>
                 </div>
             </div>

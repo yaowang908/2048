@@ -13,9 +13,16 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
     if (!Cookies.getJSON('data')) Cookies.set('data',[], {path: ''});
     const initState = (Cookies.getJSON('data').length === 0) ? generator([]) : Cookies.getJSON('data');
     const [data, setData] = useState(initState);
-
+    
     const { context, setContext } = useContext(GameContext);
+    const { gameRestart, setGameRestart } = useContext(GameContext);
 
+    if (gameRestart) {
+        Cookies.set('data', [], {path:'/'});
+        window.location.reload(false);
+    };
+
+    //move blocks 
     function eventHandler(e) {
         let [ newState, score]= moveHandler(e.code, data, context.isGameOver);
 

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
+import { GameContext } from './GameContext';
 
 const MenuContainer = styled.div`
     margin-top: 50px;
@@ -17,10 +18,12 @@ const Menus = function CreateBottomMenu(props) {
         setWidth(props.width);
     }, [props.width] );
 
+    const { gameRestart, setGameRestart  } = useContext(GameContext);
+
     return(
         <MenuContainer style={{ 'width':width }}>
-            <Button variant="contained" color="secondary" size="medium">Save</Button>
-            <Button variant="contained" color="secondary" size="medium">Restart</Button>
+            <Button variant="contained" color="secondary" size="medium">Game Level</Button>
+            <Button variant="contained" color="secondary" size="medium" onClick={()=>setGameRestart(true)}>Restart</Button>
         </MenuContainer>      
     );
 }
