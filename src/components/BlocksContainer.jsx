@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, } from 'react';
+import React, { Fragment, useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Blocks from '../functions/Blocks';
 import moveHandler from '../functions/move';
@@ -6,30 +6,38 @@ import { generator, generatorOne } from '../functions/generator';
 import differenceWith from 'lodash/differenceWith';
 import isEqual from 'lodash/isEqual';
 import Cookies from 'js-cookie';
+import { GameContext } from './GameContext';
+import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
 
 const BlocksContainer = function groupAllBlocksTogether(props) {
 
     const initState = Cookies.getJSON('data') || generator([]);
     const [data, setData] = useState(initState);
 
+    const { context, setContext } = useContext(GameContext);
+
     function eventHandler(e) {
-        let newState = moveHandler(e.code, data);
-        let gameIsOver = false;
+        let newState = moveHandler(e.code, data, context.isGameOver);
         let movementFailure = false;
 
-        if(!newState) gameIsOver = true;
         let diffBtwStates = differenceWith(newState, data, isEqual)
         if (!diffBtwStates.length) movementFailure = true;
-
+        
         // if no node are moved, should NOT generator new node
         if(!movementFailure) {
             newState = generatorOne(newState);
-            if (!!newState) setData(newState);
-            Cookies.set('data',newState, { path: ''});
+            if (!!newState) {
+                setData(newState);
+                Cookies.set('data',newState, { path: ''});
+            } else {
+                setContext({isGameOver: true});
+            }
+        } else {
+            const maxBlocksNum = BLOCKS_IN_ONE_LINE ** 2;
+            if (maxBlocksNum === newState.length) setContext({ isGameOver: true });
         }
 
-        // TODO: if no space left should !!failed!!
-
+        //if no space to create new node then GAME OVER
     }
 
     //add keyboard listener

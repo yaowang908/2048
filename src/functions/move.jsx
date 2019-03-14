@@ -2,9 +2,10 @@ import PropTypes from 'prop-types';
 import { convertor, reverseConvertor } from './convertor';
 import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
 import zip from 'lodash/zip';
-// import {generatorWithTwoDArray} from './generator';
 
-const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(eventType, data) {
+const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(eventType, data, isGameOver = false) {
+    if(isGameOver) return data;
+
     const twoDArray = convertor(data);
 
     if( eventType === 'ArrowDown' ) {
