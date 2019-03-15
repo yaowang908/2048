@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
-import { GAME_NAME, GAME_DESCRIPTION, HEADER_HEIGHT, COLOR_SCHEME } from '../GameConfig';
 import { GameContext } from './GameContext';
 
 const HeaderContainer = styled.div`
     width: 100%;
-    height: ${HEADER_HEIGHT};
     display: flex;
     margin: 10px 0px;
 `;
@@ -13,10 +11,12 @@ const HeaderContainer = styled.div`
 // flex - shrink: 1;
 // flex - basis: 0;
 const Header = function headerContainsScoreAndDescription() {
+    const { GAME_NAME, GAME_DESCRIPTION, HEADER_HEIGHT, COLOR_SCHEME } = useContext(GameContext);
+
     const { context, setContext } = useContext(GameContext);
 
     return(
-        <HeaderContainer>
+        <HeaderContainer style={{'height': HEADER_HEIGHT}}>
             <div style={{ 'flex': '1 1 auto' }}></div>
             <div style={{ 
                         'flex': '2 1 0', 

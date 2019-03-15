@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import PropTypes from 'prop-types';
-import { COLOR_SCHEME, BG_COLOR } from '../GameConfig';
+import { GameContext } from './GameContext';
 
 const Block = function indivitualBlock(props) {
+    const { COLOR_SCHEME, BG_COLOR } = useContext(GameContext);
+
     const [width, setWidth] = useState(0);
     useEffect( () => {
         setWidth(props.width);

@@ -1,11 +1,18 @@
 import React, { Fragment, useState, useEffect, } from 'react';
 import './App.css';
-
 import { GameContext } from './components/GameContext';
 import Cookies from 'js-cookie';
-
 import MainContainer from './components/MainContainer';
 import Header from './components/Header';
+import {
+  BLOCKS_IN_ONE_LINE,
+  BG_COLOR,
+  BG_BLOCK_COLOR,
+  GAME_NAME,
+  GAME_DESCRIPTION,
+  HEADER_HEIGHT,
+  COLOR_SCHEME,
+} from './GameConfig';
 
 function App() {
 
@@ -31,6 +38,13 @@ function App() {
             setContext: setGameContext, 
             gameRestart: gameRestart, 
             setGameRestart: setGameRestart,
+            BLOCKS_IN_ONE_LINE,
+            BG_COLOR,
+            BG_BLOCK_COLOR,
+            GAME_NAME,
+            GAME_DESCRIPTION,
+            HEADER_HEIGHT,
+            COLOR_SCHEME,
           }}>
           <Header></Header>
           <MainContainer></MainContainer>

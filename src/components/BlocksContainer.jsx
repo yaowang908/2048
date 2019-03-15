@@ -7,9 +7,10 @@ import differenceWith from 'lodash/differenceWith';
 import isEqual from 'lodash/isEqual';
 import Cookies from 'js-cookie';
 import { GameContext } from './GameContext';
-import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
 
 const BlocksContainer = function groupAllBlocksTogether(props) {
+    const { BLOCKS_IN_ONE_LINE } = useContext(GameContext);
+
     if (!Cookies.getJSON('data')) Cookies.set('data',[], {path: ''});
     const initState = (Cookies.getJSON('data').length === 0) ? generator([]) : Cookies.getJSON('data');
     const [data, setData] = useState(initState);

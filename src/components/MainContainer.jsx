@@ -1,11 +1,12 @@
-import React, {  Fragment, useState, useEffect, } from 'react';
+import React, {  Fragment, useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 
-import { BLOCKS_IN_ONE_LINE, BG_COLOR, } from '../GameConfig';
+// import { BLOCKS_IN_ONE_LINE, BG_COLOR, } from '../GameConfig';
 import Menus from './Menus';
 import BlocksContainer from './BlocksContainer';
 import Grid from './Grid';
 import EndGame from './EndGameScreen';
+import { GameContext } from './GameContext';
 
 const Container = styled.div`
     width: 100%;
@@ -18,7 +19,6 @@ const Main = styled.div`
     flex-basis: 0;
     min-width: 400px;
     max-width: 600px;
-    background-color: ${BG_COLOR};
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -29,10 +29,11 @@ const Main = styled.div`
 
 const SideHolder = styled.div`
     flex-grow: 1;
+    display: flex;
 `;
 
 const MainContainer = function MainPlayGround() {
-
+    const { BLOCKS_IN_ONE_LINE, BG_COLOR } = useContext(GameContext);
     const minWidth = 400;
     const [lineHeight, setLineHeight] = useState('0');
     const [gridHeight, setGridHeight] = useState('0');
@@ -63,7 +64,7 @@ const MainContainer = function MainPlayGround() {
                 <EndGame width={window.innerWidth+'px'} height={window.innerHeight+'px'}></EndGame>
                 <Container>
                     <SideHolder className={'sideHolder'}></SideHolder>
-                    <Main id={'mainHolder'} style={{'height':lineHeight+'px'}}>
+                    <Main id={'mainHolder'} style={{ 'height': lineHeight + 'px', 'backgroundColor': BG_COLOR}}>
                         <BlocksContainer blockWidth={ blockWidth }></BlocksContainer>
                         <Grid gridHeight={gridHeight+'px'}></Grid>
                     </Main>
