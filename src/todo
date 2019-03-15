@@ -1,13 +1,10 @@
 main function
 
-1. add game win function
-2. scored should be cleared after restart FIXME:
-3. update gameconfig to gamecontext for functions 
-    or figure out how to update GmaeConfig.jsx TODO:
+1. add game win function    
 
 improve gaming experience
 
 1. add animation when blocks collapse
 2. add button function to bottom menu
-    FIXME: added button but not function
+    change game level: through app.js change cookie and gameContext to change game level TODO:
 3. add button to set game level
