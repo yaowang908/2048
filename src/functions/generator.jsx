@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import { convertor, reverseConvertor } from './convertor';import sample from 'lodash/sample';
-import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
+// import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
 import sampleSize from 'lodash/sampleSize';
+import Cookies from 'js-cookie';
+
+const BLOCKS_IN_ONE_LINE = Cookies.get('BlocksPerLine');
 
 const generator = function generatorTwoNodesRandomly(data) {
     const twoDArray = convertor(data);

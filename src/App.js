@@ -17,6 +17,7 @@ import {
 function App() {
 
   let cachedScore = Cookies.getJSON('score');
+  Cookies.set('BlocksPerLine', BLOCKS_IN_ONE_LINE, {path:'/'});
 
   const [gameContext, setGameContext] = useState({
     isGameOver: false,

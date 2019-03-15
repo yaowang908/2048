@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types';
-import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
+// import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
+import Cookies from 'js-cookie';
+
+const BLOCKS_IN_ONE_LINE = Cookies.get('BlocksPerLine');
 
 const convertor = function convertObjectArrayToTwoDimentionArray(data) {
     let result = [];

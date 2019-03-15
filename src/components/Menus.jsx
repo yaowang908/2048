@@ -2,7 +2,7 @@ import React, { useState, useEffect,useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { GameContext } from './GameContext';
-
+import Cookies from 'js-cookie';
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -30,6 +30,11 @@ const Menus = function CreateBottomMenu(props) {
 
     const { gameRestart, setGameRestart  } = useContext(GameContext);
     const [ isOpen, setIsOpen ] = useState(false);
+
+    function restartGame() {
+        setGameRestart(true);
+        Cookies.set('score',0, {path:'/'});
+    }
 
     return(
         <MenuContainer style={{ 'width':width }}>
@@ -82,7 +87,7 @@ const Menus = function CreateBottomMenu(props) {
                     </List>
                 </Collapse>
             </List>
-            <Button variant="contained" color="secondary" size="medium" onClick={()=>setGameRestart(true)}>Restart</Button>
+            <Button variant="contained" color="secondary" size="medium" onClick={restartGame}>Restart</Button>
         </MenuContainer>      
     );
 }

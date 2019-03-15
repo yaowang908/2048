@@ -1,7 +1,10 @@
 // import PropTypes from 'prop-types';
 import { convertor, reverseConvertor } from './convertor';
-import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
+// import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
 import zip from 'lodash/zip';
+import Cookies from 'js-cookie';
+
+const BLOCKS_IN_ONE_LINE = Cookies.get('BlocksPerLine');
 
 const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(eventType, data, isGameOver = false, score = 0) {
     if(isGameOver) return data;
