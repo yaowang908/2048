@@ -2,6 +2,8 @@ main function
 
 1. add game win function
 2. scored should be cleared after restart FIXME:
+3. update gameconfig to gamecontext for functions 
+    or figure out how to update GmaeConfig.jsx TODO:
 
 improve gaming experience
 
