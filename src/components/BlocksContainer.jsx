@@ -9,26 +9,35 @@ import Cookies from 'js-cookie';
 import { GameContext } from './GameContext';
 
 const BlocksContainer = function groupAllBlocksTogether(props) {
-    const { BLOCKS_IN_ONE_LINE } = useContext(GameContext);
+    // const { BLOCKS_IN_ONE_LINE } = useContext(GameContext);
+    // const { context, setContext } = useContext(GameContext);
+    // const { gameRestart, setGameRestart } = useContext(GameContext);
+    const { state, dispatch } = useContext(GameContext);
 
     if (!Cookies.getJSON('data')) Cookies.set('data',[], {path: ''});
     const initState = ((Cookies.getJSON('data') && Cookies.getJSON('data').length === 0)) ? generator([]) : Cookies.getJSON('data');
     const [data, setData] = useState(initState);
     
-    const { context, setContext } = useContext(GameContext);
-    const { gameRestart, setGameRestart } = useContext(GameContext);
 
-    if (gameRestart) {
+    if (state.gameRestart) {
         Cookies.set('data', [], {path:'/'});
         window.location.reload(false);
     };
 
     //move blocks 
     function eventHandler(e) {
-        let [ newState, score]= moveHandler(e.code, data, context.isGameOver);
+        console.log(e.code);
+        if (
+            e.code !== 'ArrowDown' 
+            && e.code !== 'ArrowUp'
+            && e.code !== 'ArrowLeft'
+            && e.code !== 'ArrowRight'
+            ) { return; }
+        let [newState, score] = moveHandler(e.code, data, state.isGameOver);
 
-        setContext({score: context.score + score});
-        Cookies.set('score', context.score + score, { path: '' });
+        // setContext({ score: state.score + score});
+        dispatch({ type: "updateScore", score: state.score + score});
+        Cookies.set('score', state.score + score, { path: '' });
 
         let movementFailure = false;
 
@@ -42,13 +51,15 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
                 setData(newState);
                 Cookies.set('data',newState, { path: ''});
             } else {
-                setContext({isGameOver: true});
+                // setContext({isGameOver: true});
+                dispatch({ type: "gameOver", isGameOver: true });
                 Cookies.set('data', newState, { path: '' });
             }
         } else {
-            const maxBlocksNum = BLOCKS_IN_ONE_LINE ** 2;
+            const maxBlocksNum = state.BLOCKS_IN_ONE_LINE ** 2;
             if (maxBlocksNum === newState.length) {
-                setContext({ isGameOver: true });
+                // setContext({ isGameOver: true });
+                dispatch({ type: "gameOver", isGameOver: true });
                 Cookies.set('data', [], { path: '' });
             }
         }

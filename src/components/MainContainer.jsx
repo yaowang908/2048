@@ -33,7 +33,9 @@ const SideHolder = styled.div`
 `;
 
 const MainContainer = function MainPlayGround() {
-    const { BLOCKS_IN_ONE_LINE, BG_COLOR } = useContext(GameContext);
+    // const { BLOCKS_IN_ONE_LINE, BG_COLOR } = useContext(GameContext);
+    const {state, dispatch} = useContext(GameContext);
+
     const minWidth = 400;
     const [lineHeight, setLineHeight] = useState('0');
     const [gridHeight, setGridHeight] = useState('0');
@@ -49,7 +51,7 @@ const MainContainer = function MainPlayGround() {
         let thisHeight = window.getComputedStyle(document.getElementById('mainHolder')).width;
         let numThisHeight = Number(thisHeight.split('px')[0]);
         thisHeight = numThisHeight < minWidth ? minWidth : numThisHeight;
-        let gridHeight = thisHeight / BLOCKS_IN_ONE_LINE;
+        let gridHeight = thisHeight / state.BLOCKS_IN_ONE_LINE;
         setGridHeight(gridHeight);
         setLineHeight(thisHeight);
     }
@@ -64,7 +66,7 @@ const MainContainer = function MainPlayGround() {
                 <EndGame width={window.innerWidth+'px'} height={window.innerHeight+'px'}></EndGame>
                 <Container>
                     <SideHolder className={'sideHolder'}></SideHolder>
-                    <Main id={'mainHolder'} style={{ 'height': lineHeight + 'px', 'backgroundColor': BG_COLOR}}>
+                <Main id={'mainHolder'} style={{ 'height': lineHeight + 'px', 'backgroundColor': state.BG_COLOR}}>
                         <BlocksContainer blockWidth={ blockWidth }></BlocksContainer>
                         <Grid gridHeight={gridHeight+'px'}></Grid>
                     </Main>

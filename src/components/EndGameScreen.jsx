@@ -3,7 +3,8 @@ import { GameContext } from './GameContext';
 import PropTypes from 'prop-types';
 
 const EndGame = function endGameScreen( props ) {
-    const { context, } = useContext(GameContext);
+    // const { context, } = useContext(GameContext);
+    const {state, dispatch} = useContext(GameContext);
 
     return (
         <div style={{
@@ -14,7 +15,7 @@ const EndGame = function endGameScreen( props ) {
             'textAlign': 'center',
             'lineHeight': props.height,
             'position': 'absolute',
-            'display': context.isGameOver ? 'block' : 'none',
+            'display': state.isGameOver ? 'block' : 'none',
             'zIndex': '1000',
         }}>
             GAME OVER

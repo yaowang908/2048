@@ -11,12 +11,13 @@ const HeaderContainer = styled.div`
 // flex - shrink: 1;
 // flex - basis: 0;
 const Header = function headerContainsScoreAndDescription() {
-    const { GAME_NAME, GAME_DESCRIPTION, HEADER_HEIGHT, COLOR_SCHEME } = useContext(GameContext);
+    // const { GAME_NAME, GAME_DESCRIPTION, HEADER_HEIGHT, COLOR_SCHEME } = useContext(GameContext);
+    const {state, dispatch} = useContext(GameContext);
 
-    const { context, setContext } = useContext(GameContext);
+    // const { context, setContext } = useContext(GameContext);
 
     return(
-        <HeaderContainer style={{'height': HEADER_HEIGHT}}>
+        <HeaderContainer style={{ 'height': state.HEADER_HEIGHT}}>
             <div style={{ 'flex': '1 1 auto' }}></div>
             <div style={{ 
                         'flex': '2 1 0', 
@@ -30,7 +31,7 @@ const Header = function headerContainsScoreAndDescription() {
                         'display': 'flex',
                         'flexDirection': 'column',
                         'justifyContent': 'center',
-                        'height': HEADER_HEIGHT,
+                    'height': state.HEADER_HEIGHT,
                         'maxWidth': '50%',
                     }}>
                     <div style={{
@@ -39,18 +40,18 @@ const Header = function headerContainsScoreAndDescription() {
                         'fontSize': '3rem',
                         'fontWeight': 'bold',
                     }}>
-                        {GAME_NAME}                   
+                        {state.GAME_NAME}                   
                     </div>
                     <div style={{
                         'flex': '1 1 auto',
                         'textAlign': 'left',
                         'fontSize': '0.8rem',
                     }}>
-                        {GAME_DESCRIPTION}
+                        {state.GAME_DESCRIPTION}
                     </div>
                 </div>
-                <div style={{ 'flex': '1 1 auto', 'color': COLOR_SCHEME[128] }}>
-                    <h1>{context.score}</h1>
+                <div style={{ 'flex': '1 1 auto', 'color': state.COLOR_SCHEME[128] }}>
+                    <h1>{state.score}</h1>
                 </div>
             </div>
             <div style={{ 'flex':'1 1 auto' }}></div>

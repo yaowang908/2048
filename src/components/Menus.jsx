@@ -28,11 +28,13 @@ const Menus = function CreateBottomMenu(props) {
         setWidth(props.width);
     }, [props.width] );
 
-    const { gameRestart, setGameRestart  } = useContext(GameContext);
+    // const { gameRestart, setGameRestart  } = useContext(GameContext);
+    const { state, dispatch } = useContext(GameContext);
     const [ isOpen, setIsOpen ] = useState(false);
 
     function restartGame() {
-        setGameRestart(true);
+        // setGameRestart(true);
+        dispatch({type:'restart', gameRestart: true});
         Cookies.set('score',0, {path:'/'});
     }
 

@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { GameContext } from './GameContext';
 
 const Grid = function getGrid(props) {
-    const { BLOCKS_IN_ONE_LINE, BG_BLOCK_COLOR, BG_COLOR } = useContext(GameContext);
+    // const { BLOCKS_IN_ONE_LINE, BG_BLOCK_COLOR, BG_COLOR } = useContext(GameContext);
+    const {state,dispatch} = useContext(GameContext);
 
     let grids = [];
-    for (let i = 0; i < BLOCKS_IN_ONE_LINE ** 2; i++) {
+    for (let i = 0; i < state.BLOCKS_IN_ONE_LINE ** 2; i++) {
         grids.push(i);
     }
 
@@ -27,8 +28,8 @@ const Grid = function getGrid(props) {
                                         'flexGrow': '1',
                                         'flexShrink': '1',
                                         'flexBasis': gridHeight,
-                                        'backgroundColor': BG_BLOCK_COLOR,
-                                        'border': '10px solid '+ BG_COLOR,
+                                        'backgroundColor': state.BG_BLOCK_COLOR,
+                                        'border': '10px solid ' + state.BG_COLOR,
                                         'boxSizing': 'border-box',
                                                 }}>
                             </div>
