@@ -1,16 +1,18 @@
 .App {
   text-align: center;
+  min-height: 100vmax;
+  height: auto;
 }
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+  min-height: 100vmax;
   pointer-events: none;
 }
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 100vmax;
   display: flex;
   flex-direction: column;
   align-items: center;
