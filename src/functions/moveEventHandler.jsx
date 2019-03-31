@@ -39,9 +39,8 @@ const moveEventHandler = function eventHandler(e, state, dispatch, data, setData
         }
     } else {
         const maxBlocksNum = state.BLOCKS_IN_ONE_LINE ** 2;
-        //FIXME: when possible steps exist, shouldn't end game
 
-        if (maxBlocksNum === newState.length) {
+        if (maxBlocksNum === newState.length && shouldGameEnd(data,state)) {
             // setContext({ isGameOver: true });
             dispatch({ type: "gameOver", isGameOver: true });
             Cookies.set('data', [], { path: '' });
@@ -49,6 +48,30 @@ const moveEventHandler = function eventHandler(e, state, dispatch, data, setData
         }
     }
     //if no space to create new node then GAME OVER
+}
+
+//check possible step
+const shouldGameEnd = function tryFourDirectionFindPossibleStep(data, state) {
+    let [newStateUp, scoreUp] = moveHandler("ArrowUp", data, state.isGameOver, state.score, state.BLOCKS_IN_ONE_LINE);
+    let [newStateDown, scoreDown] = moveHandler("ArrowDown", data, state.isGameOver, state.score, state.BLOCKS_IN_ONE_LINE);
+    let [newStateLeft, scoreLeft] = moveHandler("ArrowLeft", data, state.isGameOver, state.score, state.BLOCKS_IN_ONE_LINE);
+    let [newStateRight, scoreRight] = moveHandler("ArrowRight", data, state.isGameOver, state.score, state.BLOCKS_IN_ONE_LINE);
+
+    let diffBtwStatesUp = differenceWith(newStateUp, data, isEqual);
+    let diffBtwStatesDown = differenceWith(newStateDown, data, isEqual);
+    let diffBtwStatesLeft = differenceWith(newStateLeft, data, isEqual);
+    let diffBtwStatesRight = differenceWith(newStateRight, data, isEqual);
+
+    if (
+        !diffBtwStatesUp.length
+        && !diffBtwStatesDown.length
+        && !diffBtwStatesLeft.length
+        && !diffBtwStatesRight.length
+        ) {
+            return true;
+        }
+
+    return false;
 }
 
 export { moveEventHandler } 
