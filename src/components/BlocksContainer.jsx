@@ -38,13 +38,10 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
         let [newState, score] = moveHandler(e.code, data, state.isGameOver, state.score, state.BLOCKS_IN_ONE_LINE);
 
         // setContext({ score: state.score + score});
-        dispatch({ type: "updateScore", score: state.score + score});
+        dispatch({ type: "updateScore", score: score});
         Cookies.set('score', state.score + score, { path: '' });
 
         let movementFailure = false;
-
-        console.dir(newState);
-        console.dir(data);
 
         let diffBtwStates = differenceWith(newState, data, isEqual)
         if (!diffBtwStates.length) movementFailure = true;
