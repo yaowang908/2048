@@ -23,7 +23,7 @@ const Header = function headerContainsScoreAndDescription() {
                         'flex': '2 1 0', 
                         'display': 'flex',
                         'minWidth': '400px',
-                        'maxWidth': '600px', 
+                        'maxWidth': '500px', 
                     }}>
                 <div style={{ 
                         'flex': '1 1 auto',

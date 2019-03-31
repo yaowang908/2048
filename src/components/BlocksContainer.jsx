@@ -15,12 +15,14 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
     const { state, dispatch } = useContext(GameContext);
 
     if (!Cookies.getJSON('data')) Cookies.set('data',[], {path: ''});
-    const initState = ((Cookies.getJSON('data') && Cookies.getJSON('data').length === 0)) ? generator([]) : Cookies.getJSON('data');
+    const initState = ((Cookies.getJSON('data') && Cookies.getJSON('data').length === 0)) ? generator([], state.BLOCKS_IN_ONE_LINE) : Cookies.getJSON('data');
+    
     const [data, setData] = useState(initState);
     
 
     if (state.gameRestart) {
         Cookies.set('data', [], {path:'/'});
+        Cookies.set('BlocksPerLine', state.BLOCKS_IN_ONE_LINE, { path: '/' });
         window.location.reload(false);
     };
 
@@ -33,7 +35,7 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
             && e.code !== 'ArrowLeft'
             && e.code !== 'ArrowRight'
             ) { return; }
-        let [newState, score] = moveHandler(e.code, data, state.isGameOver);
+        let [newState, score] = moveHandler(e.code, data, state.isGameOver, state.score, state.BLOCKS_IN_ONE_LINE);
 
         // setContext({ score: state.score + score});
         dispatch({ type: "updateScore", score: state.score + score});
@@ -41,12 +43,15 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
 
         let movementFailure = false;
 
+        console.dir(newState);
+        console.dir(data);
+
         let diffBtwStates = differenceWith(newState, data, isEqual)
         if (!diffBtwStates.length) movementFailure = true;
         
         // if no node are moved, should NOT generator new node
         if(!movementFailure) {
-            newState = generatorOne(newState);
+            newState = generatorOne(newState, state.BLOCKS_IN_ONE_LINE);
             if (!!newState) {
                 setData(newState);
                 Cookies.set('data',newState, { path: ''});

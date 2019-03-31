@@ -17,7 +17,10 @@ import {
 function App() {
 
   let cachedScore = Cookies.getJSON('score');
-  Cookies.set('BlocksPerLine', BLOCKS_IN_ONE_LINE, {path:'/'});
+
+  if (!Cookies.getJSON('BlocksPerLine')) {
+    Cookies.set('BlocksPerLine', BLOCKS_IN_ONE_LINE, {path:'/'});
+  }
 
   let reducer = (state, action) => {
     switch(action.type) {
@@ -27,6 +30,8 @@ function App() {
         return {...state, score: action.score};
       case "restart":
         return {...state, gameRestart: action.gameRestart};
+      case "setGameLevel":
+        return { ...state, BLOCKS_IN_ONE_LINE: action.gameLevel};
       default:
         return;
     }

@@ -14,11 +14,9 @@ const Container = styled.div`
 `;
 
 const Main = styled.div`
-    flex-grow: 2;
-    flex-shrink: 1;
-    flex-basis: 0;
+    flex:2 1 0;
     min-width: 400px;
-    max-width: 600px;
+    max-width: 500px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -28,7 +26,7 @@ const Main = styled.div`
 `;
 
 const SideHolder = styled.div`
-    flex-grow: 1;
+    flex: 1 1 auto;
     display: flex;
 `;
 
@@ -56,9 +54,9 @@ const MainContainer = function MainPlayGround() {
         setLineHeight(thisHeight);
     }
   
-    const [blockWidth, setBlcokWidth] = useState(Number(gridHeight));
+    const [blockWidth, setBlockWidth] = useState(Number(gridHeight));
     useEffect( ()=>{ 
-        setBlcokWidth(Number(gridHeight));
+        setBlockWidth(Number(gridHeight));
     }, [gridHeight]);
 
     return (
@@ -66,13 +64,14 @@ const MainContainer = function MainPlayGround() {
                 <EndGame width={window.innerWidth+'px'} height={window.innerHeight+'px'}></EndGame>
                 <Container>
                     <SideHolder className={'sideHolder'}></SideHolder>
-                <Main id={'mainHolder'} style={{ 'height': lineHeight + 'px', 'backgroundColor': state.BG_COLOR}}>
+                    <Main id={'mainHolder'} style={{ 'height': lineHeight + 'px', 'backgroundColor': state.BG_COLOR}}>
                         <BlocksContainer blockWidth={ blockWidth }></BlocksContainer>
                         <Grid gridHeight={gridHeight+'px'}></Grid>
+                        <Menus width={lineHeight+'px'}></Menus>
+
                     </Main>
                     <SideHolder className={'sideHolder'}></SideHolder>
                 </Container>  
-                <Menus width={lineHeight+'px'}></Menus>
         </Fragment>
     );
 }
