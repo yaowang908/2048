@@ -59,12 +59,6 @@ function App() {
     COLOR_SCHEME,
   }
 
-  //FIXME:update gamecontext.gamerestart
-  // const [gameRestart, setGameRestart] = useState(false);
-  // useEffect( ()=>{
-  //   setGameRestart(true);
-  // });
-
   const [state, dispatch] = useReducer(reducer, initContext);
   
   return (
