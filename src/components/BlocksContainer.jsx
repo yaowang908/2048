@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Blocks from '../functions/Blocks';
-import moveHandler from '../functions/move';
 import { generator, generatorOne } from '../functions/generator';
-import differenceWith from 'lodash/differenceWith';
-import isEqual from 'lodash/isEqual';
 import Cookies from 'js-cookie';
+import { moveEventHandler } from '../functions/moveEventHandler';
 import { GameContext } from './GameContext';
 
 const BlocksContainer = function groupAllBlocksTogether(props) {
@@ -26,61 +24,25 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
         window.location.reload(false);
     };
 
+    function eventHandlerMiddleLayer(e) {
+        return moveEventHandler(e, state, dispatch, data, setData);
+    }
     
-    //move blocks 
-    function eventHandler(e) {
-        console.log(e.code);
-        if (
-            e.code !== 'ArrowDown' 
-            && e.code !== 'ArrowUp'
-            && e.code !== 'ArrowLeft'
-            && e.code !== 'ArrowRight'
-            ) { return; }
-            let [newState, score] = moveHandler(e.code, data, state.isGameOver, state.score, state.BLOCKS_IN_ONE_LINE);
-            
-            // setContext({ score: state.score + score});
-            dispatch({ type: "updateScore", score: score});
-            Cookies.set('score', state.score + score, { path: '' });
-            
-            let movementFailure = false;
-            
-            let diffBtwStates = differenceWith(newState, data, isEqual)
-            if (!diffBtwStates.length) movementFailure = true;
-            
-            // if no node are moved, should NOT generator new node
-            if(!movementFailure) {
-                newState = generatorOne(newState, state.BLOCKS_IN_ONE_LINE);
-                if (!!newState) {
-                    setData(newState);
-                    Cookies.set('data',newState, { path: ''});
-                } else {
-                    // setContext({isGameOver: true});
-                    dispatch({ type: "gameOver", isGameOver: true });
-                    Cookies.set('data', newState, { path: '' });
-                }
-            } else {
-                const maxBlocksNum = state.BLOCKS_IN_ONE_LINE ** 2;
-                if (maxBlocksNum === newState.length) {
-                    // setContext({ isGameOver: true });
-                    dispatch({ type: "gameOver", isGameOver: true });
-                    Cookies.set('data', [], { path: '' });
-                }
-            }
-            
-            //if no space to create new node then GAME OVER
+    //add keyboard listener
+    useEffect(() => {
+        if (state.isLevelUpdate) {
+            setData(generator([], state.BLOCKS_IN_ONE_LINE));
+            dispatch({type:'isLevelUpdate',isLevelUpdate:false});
         }
-        
-        //add keyboard listener
-        useEffect(() => {
-            if (state.isLevelUpdate) {
-                setData(generator([], state.BLOCKS_IN_ONE_LINE));
-                dispatch({type:'isLevelUpdate',isLevelUpdate:false});
-            }
-            window.addEventListener('keydown', eventHandler);
-            return () => {
-            window.removeEventListener('keydown', eventHandler)
+        window.addEventListener('keydown', eventHandlerMiddleLayer);
+        return () => {
+            window.removeEventListener('keydown', eventHandlerMiddleLayer)
         };
     });
+
+    useEffect( ()=>{
+        setData(props.data);
+    },[props.data]);
 
     return (
         <div style={{ 'position': 'absolute' }}>
@@ -98,6 +60,7 @@ BlocksContainer.defaultProps = {
 
 BlocksContainer.propTypes = {
     blockWidth : PropTypes.number.isRequired,
+    data: PropTypes.array,//update when swipe
 };
 
 export default BlocksContainer;

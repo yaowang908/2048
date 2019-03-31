@@ -7,6 +7,10 @@ import BlocksContainer from './BlocksContainer';
 import Grid from './Grid';
 import EndGame from './EndGameScreen';
 import { GameContext } from './GameContext';
+import { useSwipeable } from 'react-swipeable';
+import { moveEventHandler } from '../functions/moveEventHandler';
+import Cookies from 'js-cookie';
+import { generator, generatorOne } from '../functions/generator';
 
 const Container = styled.div`
     width: 100%;
@@ -59,13 +63,26 @@ const MainContainer = function MainPlayGround() {
         setBlockWidth(Number(gridHeight));
     }, [gridHeight]);
 
+    if (!Cookies.getJSON('data')) Cookies.set('data', [], { path: '' });
+    const initState = ((Cookies.getJSON('data') && Cookies.getJSON('data').length === 0)) ? generator([], state.BLOCKS_IN_ONE_LINE) : Cookies.getJSON('data');
+    const [data, setData] = useState(initState);
+    //touch screen handlers
+    const swipeHandlers = useSwipeable({
+        onSwipedLeft: () => { console.log('left'); moveEventHandler({code: 'ArrowLeft'}, state, dispatch, data, setData) },
+        onSwipedRight: () => { console.log('right'); moveEventHandler({ code: 'ArrowRight' }, state, dispatch, data, setData) },
+        onSwipedUp: () => { console.log('up'); moveEventHandler({ code: 'ArrowUp' }, state, dispatch, data, setData) },
+        onSwipedDown: () => { console.log('down'); moveEventHandler({ code: 'ArrowDown' }, state, dispatch, data, setData) },
+        // preventDefaultTouchmoveEvent: false,
+        trackMouse: true,
+    });
+
     return (
         <Fragment>
                 <EndGame width={window.innerWidth+'px'} height={window.innerHeight+'px'}></EndGame>
-                <Container>
+                <Container  {...swipeHandlers}>
                     <SideHolder className={'sideHolder'}></SideHolder>
                     <Main id={'mainHolder'} style={{ 'height': lineHeight + 'px', 'backgroundColor': state.BG_COLOR}}>
-                        <BlocksContainer blockWidth={ blockWidth }></BlocksContainer>
+                        <BlocksContainer blockWidth={ blockWidth } data={data}></BlocksContainer>
                         <Grid gridHeight={gridHeight+'px'}></Grid>
                         <Menus width={lineHeight+'px'}></Menus>
 

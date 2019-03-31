@@ -7268,6 +7268,13 @@ react-scripts@2.1.5:
   optionalDependencies:
     fsevents "1.2.4"
 
+react-swipeable@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-swipeable/-/react-swipeable-5.1.0.tgz#de5cfe4e161b8fd78d6c01c05d9e3cd16f5c6d4b"
+  integrity sha512-TngeMpW386oCGA7fEhgoaTMXk/b9ET5Ys3TcKk9p1gmRu3fqZSuiIBUq/8bp0QKs0Oa7FcsWYiT21cinx0D/sQ==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-transition-group@^2.2.1:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.6.0.tgz#3c41cbdd9c044c5f8604d4e8d319e860919c9fae"
