@@ -32,6 +32,8 @@ function App() {
         return {...state, gameRestart: action.gameRestart};
       case "setGameLevel":
         return { ...state, BLOCKS_IN_ONE_LINE: action.gameLevel};
+      case "isLevelUpdate":
+        return {...state, isLevelUpdate: action.isLevelUpdate};
       default:
         return;
     }
@@ -47,7 +49,8 @@ function App() {
     isGameOver: false,
     score: cachedScore ? cachedScore : 0,
     gameRestart: false,
-    BLOCKS_IN_ONE_LINE,
+    isLevelUpdate: false,
+    BLOCKS_IN_ONE_LINE: Cookies.getJSON('BlocksPerLine') ? Cookies.getJSON('BlocksPerLine') : BLOCKS_IN_ONE_LINE ,
     BG_COLOR,
     BG_BLOCK_COLOR,
     GAME_NAME,

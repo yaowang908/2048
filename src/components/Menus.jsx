@@ -48,7 +48,6 @@ const Menus = function CreateBottomMenu(props) {
     const [ isOpen, setIsOpen ] = useState(false);
 
     function restartGame() {
-        // setGameRestart(true);
         dispatch({type:'restart', gameRestart: true});
         Cookies.set('score',0, {path:'/'});
     }
@@ -85,10 +84,17 @@ const Menus = function CreateBottomMenu(props) {
     }
 
     function apllyGameLevel(level) {
-
+        
         return (e)=>{
+            const gameLevelBtn = document.getElementById('game-level-btn');
+            gameLevelBtn.firstChild.textContent = "GAME LEVEL";
+            gameLevelBtn.firstChild.style.width = "auto";
+            const gameLevels = document.getElementById('game-levels');
+            gameLevels.style.cssText = 'display: none';
+
             dispatch({ type: 'restart', gameRestart: true });
             dispatch({ type: 'setGameLevel', gameLevel: level});
+            dispatch({ type: 'isLevelUpdate', isLevelUpdate: true});
         };
     }
 
