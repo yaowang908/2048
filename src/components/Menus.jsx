@@ -93,6 +93,7 @@ const Menus = function CreateBottomMenu(props) {
             gameLevels.style.cssText = 'display: none';
 
             dispatch({ type: 'restart', gameRestart: true });
+            Cookies.set('score', 0, { path: '/' });
             dispatch({ type: 'setGameLevel', gameLevel: level});
             dispatch({ type: 'isLevelUpdate', isLevelUpdate: true});
         };
