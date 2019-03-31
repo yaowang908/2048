@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { GameContext } from './GameContext';
 import Cookies from 'js-cookie';
-
 import Button from '@material-ui/core/Button';
 
 const MenuContainer = styled.div`

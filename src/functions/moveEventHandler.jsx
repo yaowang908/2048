@@ -14,6 +14,7 @@ const moveEventHandler = function eventHandler(e, state, dispatch, data, setData
         && e.code !== 'ArrowLeft'
         && e.code !== 'ArrowRight'
     ) { return; }
+    if (state.isGameOver) return;
     let [newState, score] = moveHandler(e.code, data, state.isGameOver, state.score, state.BLOCKS_IN_ONE_LINE);
 
     // setContext({ score: state.score + score});
@@ -38,10 +39,13 @@ const moveEventHandler = function eventHandler(e, state, dispatch, data, setData
         }
     } else {
         const maxBlocksNum = state.BLOCKS_IN_ONE_LINE ** 2;
+        //FIXME: when possible steps exist, shouldn't end game
+
         if (maxBlocksNum === newState.length) {
             // setContext({ isGameOver: true });
             dispatch({ type: "gameOver", isGameOver: true });
             Cookies.set('data', [], { path: '' });
+            Cookies.set('score', 0, { path: '' });
         }
     }
     //if no space to create new node then GAME OVER

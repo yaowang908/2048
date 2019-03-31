@@ -1,10 +1,17 @@
 import React, { useContext } from 'react';
 import { GameContext } from './GameContext';
 import PropTypes from 'prop-types';
+import Cookies from 'js-cookie';
+import Button from '@material-ui/core/Button';
 
 const EndGame = function endGameScreen( props ) {
     // const { context, } = useContext(GameContext);
     const {state, dispatch} = useContext(GameContext);
+
+    function restartGame() {
+        dispatch({ type: 'restart', gameRestart: true });
+        Cookies.set('score', 0, { path: '/' });
+    }
 
     return (
         <div style={{
@@ -18,7 +25,9 @@ const EndGame = function endGameScreen( props ) {
             'display': state.isGameOver ? 'block' : 'none',
             'zIndex': '1000',
         }}>
-            GAME OVER
+            <span>GAME    </span>
+            <Button variant="contained" color="secondary" size="medium" onClick={restartGame}>RESTART</Button>
+            <span>    OVER</span>
         </div>
     );
 }

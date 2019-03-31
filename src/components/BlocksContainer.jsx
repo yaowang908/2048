@@ -34,7 +34,9 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
             setData(generator([], state.BLOCKS_IN_ONE_LINE));
             dispatch({type:'isLevelUpdate',isLevelUpdate:false});
         }
-        window.addEventListener('keydown', eventHandlerMiddleLayer);
+        if( !state.isGameOver) {
+            window.addEventListener('keydown', eventHandlerMiddleLayer);
+        }
         return () => {
             window.removeEventListener('keydown', eventHandlerMiddleLayer)
         };
