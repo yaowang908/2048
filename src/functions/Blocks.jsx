@@ -1,8 +1,11 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment, useContext } from 'react';
+import {GameContext} from '../components/GameContext';
 import PropTypes from 'prop-types';
 import Block from '../components/Block';
 
 const Blocks = function drawAllBlocks(props) {
+    const { state, dispatch } = useContext(GameContext);
+
     const [data,setData] = useState(props.data);
     useEffect(() => {
         setData(props.data);
@@ -16,7 +19,7 @@ const Blocks = function drawAllBlocks(props) {
     return(
         <Fragment>
             {data.map((x, index)=>{
-                return <Block num={x.num} key={index} position={x.position} width={blockWidth}></Block>
+                return <Block num={x.num} key={index} position={x.position} width={blockWidth} gameLevel={state.BLOCKS_IN_ONE_LINE}></Block>
             })}
         </Fragment>
     );

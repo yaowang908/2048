@@ -31,7 +31,7 @@ const Block = function indivitualBlock(props) {
             'lineHeight': (width - 20) + 'px',
             'textAlign': 'center',
             'color': props.num>256 ? '#f2f2f2' : '#000',
-            'fontSize': props.num>64 ? '2rem' : '2.5rem',
+            'fontSize': props.gameLevel<10? (props.num>64 ? '2rem' : '2.5rem'): '0.8rem',
             'fontWeight': 'bold',
             'backgroundColor': color,
             'boxSizing': 'border-box',
