@@ -10,7 +10,7 @@ const EndGame = function endGameScreen( props ) {
 
     function restartGame() {
         dispatch({ type: 'restart', gameRestart: true });
-        Cookies.set('score', 0, { path: '/' });
+        Cookies.set('score', 0, { path: '' });
     }
 
     return (

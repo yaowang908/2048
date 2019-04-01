@@ -19,7 +19,7 @@ function App() {
   let cachedScore = Cookies.getJSON('score');
 
   if (!Cookies.getJSON('BlocksPerLine')) {
-    Cookies.set('BlocksPerLine', BLOCKS_IN_ONE_LINE, {path:'/'});
+    Cookies.set('BlocksPerLine', BLOCKS_IN_ONE_LINE, {path:''});
   }
 
   let reducer = (state, action) => {

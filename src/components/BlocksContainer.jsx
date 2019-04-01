@@ -19,8 +19,8 @@ const BlocksContainer = function groupAllBlocksTogether(props) {
     
 
     if (state.gameRestart) {
-        Cookies.set('data', [], {path:'/'});
-        Cookies.set('BlocksPerLine', state.BLOCKS_IN_ONE_LINE, { path: '/' });
+        Cookies.set('data', [], {path:''});
+        Cookies.set('BlocksPerLine', state.BLOCKS_IN_ONE_LINE, { path: '' });
         window.location.reload(false);
     };
 
