@@ -4,21 +4,35 @@ import styled from 'styled-components';
 import { GameContext } from './GameContext';
 import Cookies from 'js-cookie';
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
 
 const MenuContainer = styled.div`
     margin-top: 50px;
     height: 50px;
     display: flex;
     justify-content: space-between;
+    position: relative;
+`;
+
+const GameLevelContainer = styled.ul`
+    width: 135px;
+    top: 0;
+    padding: 0;
+    margin: 0;
+    margin-top: 0;
+    position: absolute;
+    list-style: none;
+    text-align: center;
+    z-index: 100;
+    display: none;
+    transition: all 0.5s ease-in-out;
+`;
+
+const GameLevelItem = styled.li`
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px;
+    border-bottom: 1px solid #f5f5f5;
+    cursor: pointer;
 `;
 
 const Menus = function CreateBottomMenu(props) {
@@ -28,66 +42,71 @@ const Menus = function CreateBottomMenu(props) {
         setWidth(props.width);
     }, [props.width] );
 
-    const { gameRestart, setGameRestart  } = useContext(GameContext);
+    // const { gameRestart, setGameRestart  } = useContext(GameContext);
+    const { state, dispatch } = useContext(GameContext);
     const [ isOpen, setIsOpen ] = useState(false);
 
     function restartGame() {
-        setGameRestart(true);
-        Cookies.set('score',0, {path:'/'});
+        dispatch({type:'restart', gameRestart: true});
+        Cookies.set('score',0, {path:''});
+    }
+
+    function setGameLevel() { 
+        const gameLevelBtn = document.getElementById('game-level-btn');
+        gameLevelBtn.firstChild.textContent = "";
+        gameLevelBtn.firstChild.style.width= "103px";
+
+        const gameLevels = document.getElementById('game-levels');
+        gameLevels.style.cssText = 'display: block';
+
+        gameLevels.addEventListener('wheel',(e)=>{
+            let currentTop = gameLevels.style.top;
+            gameLevels.style.cssText = `top: ${scrollToGameLevel(currentTop, e.deltaY)}px; display: block`;
+        });
+
+        function scrollToGameLevel(top, upOrDown) {
+            const currentTop = Number(top.split('px')[0]); 
+            if (upOrDown>0) {
+                //goUP
+                if (currentTop >= -48) {
+                    return currentTop - 48;
+                }
+                return currentTop;
+            } else if (upOrDown<0) {
+                //goDown
+                if (currentTop <= -48) {
+                    return currentTop + 48;
+                }
+                return currentTop;
+            }
+        }
+    }
+
+    function apllyGameLevel(level) {
+        
+        return (e)=>{
+            const gameLevelBtn = document.getElementById('game-level-btn');
+            gameLevelBtn.firstChild.textContent = "GAME LEVEL";
+            gameLevelBtn.firstChild.style.width = "auto";
+            const gameLevels = document.getElementById('game-levels');
+            gameLevels.style.cssText = 'display: none';
+
+            dispatch({ type: 'restart', gameRestart: true });
+            Cookies.set('score', 0, { path: '' });
+            dispatch({ type: 'setGameLevel', gameLevel: level});
+            dispatch({ type: 'isLevelUpdate', isLevelUpdate: true});
+        };
     }
 
     return(
         <MenuContainer style={{ 'width':width }}>
-            {/* <Button variant="contained" color="secondary" size="medium">Game Level</Button> */}
-            <List style={{
-                    'backgroundColor': '#f50057',
-                    'boxShadow': '0px 1px 5px 0px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 3px 1px -2px rgba(0,0,0,0.12)',
-                    'borderRadius': '4px', 
-                    }}>
-                <ListItem button onClick={()=>{setIsOpen(!isOpen)}}>
-                    <ListItemText inset 
-                    primary={<span style={{ 
-                            "color": "#fff",
-                            'fontWeight': '500',
-                            'fontFamily': '"Roboto", "Helvetica", "Arial", sans-serif',
-                            'fontSize': '0.875rem', 
-                        }}>GAME LEVEL</span>} 
-                    style={{
-                        'color': '#fff',
-                        'paddingLeft': '10px',
-                        'marginTop': '-10px',
-                    }}/>
-                    {isOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItem>
-                <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding style={{
-                        'backgroundColor': '#282c34',
-                    }}>
-                        <ListItem button>
-                            <ListItemText inset primary={<span style={{"color": "#fff"}}>4 x 4</span>} style={{
-                                'paddingLeft': '10px',
-                                'textAlign': 'center',
-                                'borderBottom': '1px solid #fff',
-                            }}/>
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemText inset primary={<span style={{"color": "#fff"}}>5 x 5</span>} style={{
-                                'paddingLeft': '10px',
-                                'textAlign': 'center',
-                                'borderBottom': '1px solid #fff',
-                            }}/>
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemText inset primary={<span style={{"color": "#fff"}}>10 x 10</span>} style={{
-                                'paddingLeft': '10px',
-                                'textAlign': 'center',
-                                'borderBottom': '1px solid #fff',
-                            }}/>
-                        </ListItem>
-                    </List>
-                </Collapse>
-            </List>
-            <Button variant="contained" color="secondary" size="medium" onClick={restartGame}>Restart</Button>
+            <GameLevelContainer id="game-levels">
+                <GameLevelItem onClick={apllyGameLevel(4)}>4x4</GameLevelItem>
+                <GameLevelItem onClick={apllyGameLevel(5)}>5x5</GameLevelItem>
+                <GameLevelItem onClick={apllyGameLevel(10)}>10x10</GameLevelItem>
+            </GameLevelContainer>
+            <Button variant="contained" color="secondary" size="medium" id='game-level-btn' onClick={setGameLevel}>GAME LEVEL</Button>
+            <Button variant="contained" color="secondary" size="medium" onClick={restartGame}>RESTART</Button>
         </MenuContainer>      
     );
 }

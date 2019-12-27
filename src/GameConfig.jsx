@@ -1,7 +1,7 @@
 const BLOCKS_IN_ONE_LINE = 5;
 const BG_COLOR = 'rgba(136, 129, 107, 1)';
 const BG_BLOCK_COLOR = 'rgba(210, 207, 207, 0.8)';
-const GAME_NAME = '2048';
+const GAME_NAME = '2048+';
 const GAME_DESCRIPTION = 'Join those numbers and get as big as you can, 2048 is not the end!';
 const HEADER_HEIGHT = '15vh';
 const COLOR_SCHEME = {

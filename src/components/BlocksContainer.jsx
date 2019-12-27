@@ -1,68 +1,50 @@
 import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Blocks from '../functions/Blocks';
-import moveHandler from '../functions/move';
 import { generator, generatorOne } from '../functions/generator';
-import differenceWith from 'lodash/differenceWith';
-import isEqual from 'lodash/isEqual';
 import Cookies from 'js-cookie';
+import { moveEventHandler } from '../functions/moveEventHandler';
 import { GameContext } from './GameContext';
 
 const BlocksContainer = function groupAllBlocksTogether(props) {
-    const { BLOCKS_IN_ONE_LINE } = useContext(GameContext);
+    // const { BLOCKS_IN_ONE_LINE } = useContext(GameContext);
+    // const { context, setContext } = useContext(GameContext);
+    // const { gameRestart, setGameRestart } = useContext(GameContext);
+    const { state, dispatch } = useContext(GameContext);
 
     if (!Cookies.getJSON('data')) Cookies.set('data',[], {path: ''});
-    const initState = (Cookies.getJSON('data').length === 0) ? generator([]) : Cookies.getJSON('data');
+    const initState = ((Cookies.getJSON('data') && Cookies.getJSON('data').length === 0)) ? generator([], state.BLOCKS_IN_ONE_LINE) : Cookies.getJSON('data');
+    
     const [data, setData] = useState(initState);
     
-    const { context, setContext } = useContext(GameContext);
-    const { gameRestart, setGameRestart } = useContext(GameContext);
 
-    if (gameRestart) {
-        Cookies.set('data', [], {path:'/'});
+    if (state.gameRestart) {
+        Cookies.set('data', [], {path:''});
+        Cookies.set('BlocksPerLine', state.BLOCKS_IN_ONE_LINE, { path: '' });
         window.location.reload(false);
     };
 
-    //move blocks 
-    function eventHandler(e) {
-        let [ newState, score]= moveHandler(e.code, data, context.isGameOver);
-
-        setContext({score: context.score + score});
-        Cookies.set('score', context.score + score, { path: '' });
-
-        let movementFailure = false;
-
-        let diffBtwStates = differenceWith(newState, data, isEqual)
-        if (!diffBtwStates.length) movementFailure = true;
-        
-        // if no node are moved, should NOT generator new node
-        if(!movementFailure) {
-            newState = generatorOne(newState);
-            if (!!newState) {
-                setData(newState);
-                Cookies.set('data',newState, { path: ''});
-            } else {
-                setContext({isGameOver: true});
-                Cookies.set('data', newState, { path: '' });
-            }
-        } else {
-            const maxBlocksNum = BLOCKS_IN_ONE_LINE ** 2;
-            if (maxBlocksNum === newState.length) {
-                setContext({ isGameOver: true });
-                Cookies.set('data', [], { path: '' });
-            }
-        }
-
-        //if no space to create new node then GAME OVER
+    function eventHandlerMiddleLayer(e) {
+        return moveEventHandler(e, state, dispatch, data, setData);
     }
-
+    
     //add keyboard listener
     useEffect(() => {
-        window.addEventListener('keydown', eventHandler);
+        if (state.isLevelUpdate) {
+            setData(generator([], state.BLOCKS_IN_ONE_LINE));
+            dispatch({type:'isLevelUpdate',isLevelUpdate:false});
+        }
+        if( !state.isGameOver) {
+            window.addEventListener('keydown', eventHandlerMiddleLayer);
+        }
         return () => {
-            window.removeEventListener('keydown', eventHandler)
+            window.removeEventListener('keydown', eventHandlerMiddleLayer)
         };
     });
+
+    useEffect( ()=>{
+        setData(props.data);
+    },[props.data]);
 
     return (
         <div style={{ 'position': 'absolute' }}>
@@ -80,6 +62,7 @@ BlocksContainer.defaultProps = {
 
 BlocksContainer.propTypes = {
     blockWidth : PropTypes.number.isRequired,
+    data: PropTypes.array,//update when swipe
 };
 
 export default BlocksContainer;

@@ -4,31 +4,32 @@ import { convertor, reverseConvertor } from './convertor';import sample from 'lo
 import sampleSize from 'lodash/sampleSize';
 import Cookies from 'js-cookie';
 
-const BLOCKS_IN_ONE_LINE = Cookies.get('BlocksPerLine');
+// const BLOCKS_IN_ONE_LINE = Cookies.get('BlocksPerLine');
 
-const generator = function generatorTwoNodesRandomly(data) {
-    const twoDArray = convertor(data);
+const generator = function generatorTwoNodesRandomly(data, BLOCKS_IN_ONE_LINE) {
+    const twoDArray = convertor(data, BLOCKS_IN_ONE_LINE);
     const dataCopy = [...twoDArray];
-
-    const resultTwoDArray = generatorWithTwoDArray(dataCopy);
+    
+    const resultTwoDArray = generatorWithTwoDArray(dataCopy, 2, BLOCKS_IN_ONE_LINE);
      
-    if (!resultTwoDArray) return false;
-    const result = reverseConvertor(resultTwoDArray);
+    // if (!resultTwoDArray) return false;
+
+    const result = reverseConvertor(resultTwoDArray, BLOCKS_IN_ONE_LINE);
     return result;
 }
 
-const generatorOne = function generatorOneNodeRandomly(data) {
-    const twoDArray = convertor(data);
+const generatorOne = function generatorOneNodeRandomly(data, BLOCKS_IN_ONE_LINE) {
+    const twoDArray = convertor(data, BLOCKS_IN_ONE_LINE);
     const dataCopy = [...twoDArray];
 
-    const resultTwoDArray = generatorWithTwoDArray(dataCopy, 1);
+    const resultTwoDArray = generatorWithTwoDArray(dataCopy, 1, BLOCKS_IN_ONE_LINE);
 
     if (!resultTwoDArray) return false;
-    const result = reverseConvertor(resultTwoDArray);
+    const result = reverseConvertor(resultTwoDArray, BLOCKS_IN_ONE_LINE);
     return result;
 }
 
-const generatorWithTwoDArray = function (data, size = 2) {
+const generatorWithTwoDArray = function (data, size = 2, BLOCKS_IN_ONE_LINE) {
     let potentialPosition = [];
     let topFloor = 0;
     let dataCopy = [...data];

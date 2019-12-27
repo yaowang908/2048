@@ -4,12 +4,12 @@ import { convertor, reverseConvertor } from './convertor';
 import zip from 'lodash/zip';
 import Cookies from 'js-cookie';
 
-const BLOCKS_IN_ONE_LINE = Cookies.get('BlocksPerLine');
+// const BLOCKS_IN_ONE_LINE = Cookies.get('BlocksPerLine');
 
-const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(eventType, data, isGameOver = false, score = 0) {
+const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(eventType, data, isGameOver = false, score = 0, BLOCKS_IN_ONE_LINE) {
     if(isGameOver) return data;
 
-    const twoDArray = convertor(data);
+    const twoDArray = convertor(data, BLOCKS_IN_ONE_LINE);
 
     if( eventType === 'ArrowDown' ) {
         console.log('ArrowDown')
@@ -48,7 +48,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
             A[i] = thisArray.reverse();
         }// end of move down
 
-        return [ reverseConvertor(A), score ];
+        return [reverseConvertor(A, BLOCKS_IN_ONE_LINE), score ];
     }
 
     if( eventType === 'ArrowUp') {
@@ -82,7 +82,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
             }
             A[i] = thisArray.reverse();
         }
-        return [ reverseConvertor(A), score ];
+        return [reverseConvertor(A, BLOCKS_IN_ONE_LINE), score ];
     }
 
     if( eventType === 'ArrowLeft') {
@@ -118,7 +118,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
             }
             A[i] = thisArray;
         }
-        return [ reverseConvertor(zip(...A)), score ];
+        return [reverseConvertor(zip(...A), BLOCKS_IN_ONE_LINE), score ];
     }
 
     if( eventType === 'ArrowRight') {
@@ -154,7 +154,7 @@ const moveHandler = function listenToKeyboardAndRecieveDataAndReturnMutated(even
             }
             A[i] = thisArray.reverse();
         }
-        return [ reverseConvertor(zip(...A)), score ];
+        return [reverseConvertor(zip(...A), BLOCKS_IN_ONE_LINE), score ];
     }
 }
 

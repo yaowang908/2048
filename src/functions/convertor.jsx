@@ -2,9 +2,9 @@ import PropTypes from 'prop-types';
 // import { BLOCKS_IN_ONE_LINE } from '../GameConfig';
 import Cookies from 'js-cookie';
 
-const BLOCKS_IN_ONE_LINE = Cookies.get('BlocksPerLine');
+// const BLOCKS_IN_ONE_LINE = Cookies.get('BlocksPerLine');
 
-const convertor = function convertObjectArrayToTwoDimentionArray(data) {
+const convertor = function convertObjectArrayToTwoDimentionArray(data, BLOCKS_IN_ONE_LINE) {
     let result = [];
     let subLevel = [];
     for(let m=0; m<BLOCKS_IN_ONE_LINE; m+=1) {
@@ -13,7 +13,6 @@ const convertor = function convertObjectArrayToTwoDimentionArray(data) {
     for(let n=0; n<BLOCKS_IN_ONE_LINE; n+=1) {
         result.push([...subLevel]);
     }
-
     if(!data) return result;
 
     data.map(x => {
@@ -32,7 +31,7 @@ convertor.propTypes = {
     ),
 }
 
-const reverseConvertor = function (data) {
+const reverseConvertor = function (data, BLOCKS_IN_ONE_LINE) {
     let result = [];
 
     for (let m = 0; m < BLOCKS_IN_ONE_LINE; m += 1) {
