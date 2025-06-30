@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import { GameContext } from '../components/GameContext';
 import Cookies from 'js-cookie';
 import MainContainer from '../components/MainContainer';
@@ -15,15 +15,6 @@ import {
 import { State, Action } from '../lib/types';
 
 export default function Home() {
-  const scoreFromCookie = Cookies.get('score');
-  const cachedScore = scoreFromCookie ? JSON.parse(scoreFromCookie) : 0;
-
-  if (!Cookies.get('BlocksPerLine')) {
-    Cookies.set('BlocksPerLine', JSON.stringify(BLOCKS_IN_ONE_LINE), {
-      path: '',
-    });
-  }
-
   let reducer = (state: State, action: Action) => {
     switch (action.type) {
       case 'gameOver':
@@ -31,7 +22,17 @@ export default function Home() {
       case 'updateScore':
         return { ...state, score: action.score };
       case 'restart':
-        return { ...state, gameRestart: action.gameRestart };
+        if (action.gameRestart) {
+          Cookies.set('score', '0');
+          return {
+            ...state,
+            isGameOver: false,
+            score: 0,
+            gameRestart: true,
+          };
+        } else {
+          return { ...state, gameRestart: false };
+        }
       case 'setGameLevel':
         return { ...state, BLOCKS_IN_ONE_LINE: action.gameLevel };
       case 'isLevelUpdate':
@@ -41,17 +42,12 @@ export default function Home() {
     }
   };
 
-  const blocksPerLineFromCookie = Cookies.get('BlocksPerLine');
-  const blocksInOneLine = blocksPerLineFromCookie
-    ? JSON.parse(blocksPerLineFromCookie)
-    : BLOCKS_IN_ONE_LINE;
-
   const initContext: State = {
     isGameOver: false,
-    score: cachedScore ? cachedScore : 0,
+    score: 0,
     gameRestart: false,
     isLevelUpdate: false,
-    BLOCKS_IN_ONE_LINE: blocksInOneLine,
+    BLOCKS_IN_ONE_LINE: BLOCKS_IN_ONE_LINE,
     BG_COLOR,
     BG_BLOCK_COLOR,
     GAME_NAME,
@@ -61,6 +57,25 @@ export default function Home() {
   };
 
   const [state, dispatch] = useReducer(reducer, initContext);
+
+  useEffect(() => {
+    const scoreFromCookie = Cookies.get('score');
+    if (scoreFromCookie) {
+      dispatch({ type: 'updateScore', score: JSON.parse(scoreFromCookie) });
+    }
+
+    const blocksPerLineFromCookie = Cookies.get('BlocksPerLine');
+    if (blocksPerLineFromCookie) {
+      dispatch({
+        type: 'setGameLevel',
+        gameLevel: JSON.parse(blocksPerLineFromCookie),
+      });
+    } else {
+      Cookies.set('BlocksPerLine', JSON.stringify(BLOCKS_IN_ONE_LINE), {
+        path: '',
+      });
+    }
+  }, []);
 
   return (
     <div className='App'>

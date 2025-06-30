@@ -54,7 +54,18 @@ const MainContainer = function MainPlayGround() {
   const [data, setData] = useState<BlockData[]>([]);
 
   useEffect(() => {
-    if (!state) return;
+    if (!state || !dispatch) return;
+
+    if (state.gameRestart) {
+      const initialData = generator([], state.BLOCKS_IN_ONE_LINE);
+      if (initialData) {
+        setData(initialData);
+        Cookies.set('data', JSON.stringify(initialData), { path: '' });
+        dispatch({ type: 'restart', gameRestart: false });
+      }
+      return;
+    }
+
     const dataFromCookie = Cookies.get('data');
     if (dataFromCookie) {
       try {
@@ -73,7 +84,7 @@ const MainContainer = function MainPlayGround() {
       setData(initialData);
       Cookies.set('data', JSON.stringify(initialData), { path: '' });
     }
-  }, [state?.BLOCKS_IN_ONE_LINE]);
+  }, [state?.BLOCKS_IN_ONE_LINE, state?.gameRestart, dispatch]);
 
   useEffect(() => {
     if (!state || !dispatch) return;

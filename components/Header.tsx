@@ -12,15 +12,15 @@ const Header: React.FC = () => {
         <div style={{ height: state.HEADER_HEIGHT }} className="flex w-full my-[10px]">
             <div className="flex-auto"></div>
             <div className="flex flex-[2_1_0%] min-w-[400px] max-w-[500px]">
-                <div style={{ height: state.HEADER_HEIGHT }} className="flex flex-auto flex-col justify-center max-w-1/2 text-left">
-                    <div className="grow-2 shrink basis-auto text-left text-5xl font-bold">
+                <div style={{ height: state.HEADER_HEIGHT }} className="flex flex-auto flex-col justify-center max-w-[50%] text-left">
+                    <div className="grow shrink basis-auto text-left text-[4rem] font-bold">
                         {state.GAME_NAME}
                     </div>
                     <div className="flex-auto text-left text-[0.8rem]">
                         {state.GAME_DESCRIPTION}
                     </div>
                 </div>
-                <div style={{ color: state.COLOR_SCHEME[128] }} className="flex-auto">
+                <div style={{ color: state.COLOR_SCHEME[128] }} className="flex-auto text-[5rem] flex items-center justify-center">
                     <h1>{state.score}</h1>
                 </div>
             </div>

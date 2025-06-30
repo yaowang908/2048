@@ -1,3 +1,4 @@
+import '../styles/reset.css';
 import '../styles/App.css';
 import '../styles/index.css';
 
