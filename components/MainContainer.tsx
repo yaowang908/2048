@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect, useContext } from 'react';
-import styled from 'styled-components';
 
 // import { BLOCKS_IN_ONE_LINE, BG_COLOR, } from '../GameConfig';
 import Menus from './Menus';
@@ -12,28 +11,6 @@ import { moveEventHandler } from '../lib/functions/moveEventHandler';
 import Cookies from 'js-cookie';
 import { generator } from '../lib/functions/generator';
 import { BlockData } from '../lib/types';
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-`;
-
-const Main = styled.div`
-  flex: 2 1 0;
-  min-width: 400px;
-  max-width: 500px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 10px;
-  box-sizing: content-box;
-  position: relative;
-`;
-
-const SideHolder = styled.div`
-  flex: 1 1 auto;
-  display: flex;
-`;
 
 const MainContainer = function MainPlayGround() {
   // const { BLOCKS_IN_ONE_LINE, BG_COLOR } = useContext(GameContext);
@@ -63,10 +40,10 @@ const MainContainer = function MainPlayGround() {
       document.getElementById('mainHolder')
     ).width;
     let numThisHeight = Number(thisHeight.split('px')[0]);
-    thisHeight = numThisHeight < minWidth ? minWidth : numThisHeight;
-    let gridHeight = thisHeight / state.BLOCKS_IN_ONE_LINE;
+    numThisHeight = numThisHeight < minWidth ? minWidth : numThisHeight;
+    let gridHeight = numThisHeight / state.BLOCKS_IN_ONE_LINE;
     setGridHeight(String(gridHeight));
-    setLineHeight(String(thisHeight));
+    setLineHeight(String(numThisHeight));
   }
 
   const [blockWidth, setBlockWidth] = useState(Number(gridHeight));
@@ -155,11 +132,12 @@ const MainContainer = function MainPlayGround() {
           height={window.innerHeight + 'px'}
         ></EndGame>
       )}
-      <Container {...swipeHandlers}>
-        <SideHolder className={'sideHolder'}></SideHolder>
-        <Main
+      <div {...swipeHandlers} className="flex w-full">
+        <div className={'sideHolder flex flex-auto'}></div>
+        <div
           id={'mainHolder'}
           style={{ height: lineHeight + 'px', backgroundColor: state.BG_COLOR }}
+          className="relative box-content flex flex-row flex-wrap min-w-[400px] max-w-[500px] flex-[2_1_0%] p-[10px]"
         >
           <BlocksContainer
             blockWidth={Number(blockWidth)}
@@ -167,9 +145,9 @@ const MainContainer = function MainPlayGround() {
           ></BlocksContainer>
           <Grid gridHeight={gridHeight + 'px'}></Grid>
           <Menus width={lineHeight + 'px'}></Menus>
-        </Main>
-        <SideHolder className={'sideHolder'}></SideHolder>
-      </Container>
+        </div>
+        <div className={'sideHolder flex flex-auto'}></div>
+      </div>
     </Fragment>
   );
 };

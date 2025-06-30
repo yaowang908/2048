@@ -1,39 +1,7 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { GameContext } from './GameContext';
 import Cookies from 'js-cookie';
 import Button from '@material-ui/core/Button';
-
-const MenuContainer = styled.div`
-    margin-top: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-`;
-
-const GameLevelContainer = styled.ul`
-    width: 135px;
-    top: 0;
-    padding: 0;
-    margin: 0;
-    margin-top: 0;
-    position: absolute;
-    list-style: none;
-    text-align: center;
-    z-index: 100;
-    display: none;
-    transition: all 0.5s ease-in-out;
-`;
-
-const GameLevelItem = styled.li`
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 10px;
-    border-bottom: 1px solid #f5f5f5;
-    cursor: pointer;
-`;
 
 interface MenusProps {
     width: string;
@@ -111,12 +79,12 @@ const Menus: React.FC<MenusProps> = ({ width }) => {
     }
 
     return (
-        <MenuContainer style={{ width: width }}>
-            <GameLevelContainer id="game-levels">
-                <GameLevelItem onClick={apllyGameLevel(4)}>4x4</GameLevelItem>
-                <GameLevelItem onClick={apllyGameLevel(5)}>5x5</GameLevelItem>
-                <GameLevelItem onClick={apllyGameLevel(10)}>10x10</GameLevelItem>
-            </GameLevelContainer>
+        <div style={{ width: width }} className="relative mt-[50px] h-[50px] flex justify-between">
+            <ul id="game-levels" className="absolute top-0 w-[135px] p-0 m-0 list-none text-center z-[100] hidden transition-all duration-500 ease-in-out">
+                <li onClick={apllyGameLevel(4)} className="text-base font-bold p-[10px] border-b border-gray-100 cursor-pointer">4x4</li>
+                <li onClick={apllyGameLevel(5)} className="text-base font-bold p-[10px] border-b border-gray-100 cursor-pointer">5x5</li>
+                <li onClick={apllyGameLevel(10)} className="text-base font-bold p-[10px] border-b border-gray-100 cursor-pointer">10x10</li>
+            </ul>
             <Button
                 variant="contained"
                 color="secondary"
@@ -134,12 +102,8 @@ const Menus: React.FC<MenusProps> = ({ width }) => {
             >
                 RESTART
             </Button>
-        </MenuContainer>
+        </div>
     );
 };
-
-Menus.propTypes = {
-    width: PropTypes.string.isRequired,
-}
 
 export default Menus;
