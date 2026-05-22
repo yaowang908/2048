@@ -719,9 +719,10 @@ jiti@^2.4.2:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-2.4.2.tgz#d19b7732ebb6116b06e2038da74a55366faef560"
   integrity sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==
 
-js-cookie@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.0.tgz#1b2c279a6eece380a12168b92485265b35b1effb"
+js-cookie@^3.0.7:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.7.tgz#0a53abfc459c8e89c85d7a38eb6cb68714965b8c"
+  integrity sha512-z/wZZgDrkNV1eA0ULjM/F9/50Ya8fbzgKneSpoPsXSGd0KnpdtHfOZWK+GcwLk+EZbS4F9RBhU+K2RgzuDaItw==
 
 "js-tokens@^3.0.0 || ^4.0.0":
   version "4.0.0"
