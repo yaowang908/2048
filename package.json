@@ -8,7 +8,7 @@
     "@material-ui/icons": "^3.0.2",
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.23",
-    "next": "^16.1.7",
+    "next": "^16.2.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-swipeable": "^5.1.0",
@@ -40,6 +40,7 @@
     "typescript": "^5.8.3"
   },
   "resolutions": {
-    "tar": "7.5.10"
+    "tar": "7.5.19",
+    "sharp": "0.35.0"
   }
 }
